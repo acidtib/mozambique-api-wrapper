@@ -1,0 +1,14 @@
+{
+  "name": "mozambique-api-wrapper",
+  "version": "1.0.0",
+  "description": "Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  }
+}
