@@ -6,8 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "contributors": [
+    {
+      "name": "Dainel Vera",
+      "url": "https://github.com/arubinofaux"
+    }
+  ],
   "license": "ISC",
+  "keywords": [
+    "Apex Legends",
+    "API"
+  ],
   "dependencies": {
     "node-fetch": "^2.6.0"
   }
