@@ -32,3 +32,11 @@ mozambiqueClient.news()
   catch(function (e) {
     console.log(e);
   });
+
+mozambiqueClient.server()
+  .then(function (result) {
+    console.log(result);
+  }).
+  catch(function (e) {
+    console.log(e);
+  })
