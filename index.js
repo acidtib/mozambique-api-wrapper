@@ -16,7 +16,8 @@ function MozambiqueAPI(apiKey) {
   self.apiKey = apiKey;
 
   self.headers = {
-    'User-Agent': "mozambique-api-wrapper"
+    "User-Agent": "mozambique-api-wrapper",
+    "Content-Type": "application/json"
   };
 }
 
