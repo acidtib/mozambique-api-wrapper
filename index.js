@@ -4,7 +4,8 @@ const BASE_URL = "https://api.mozambiquehe.re";
 
 const DIRECTORY = {
   SEARCH_URL: BASE_URL + "/bridge?version=4",
-  NEWS_URL: BASE_URL + "/news?version=4"
+  NEWS_URL: BASE_URL + "/news?version=4",
+  SERVER_STATUS: "http://apexlegendsstatus.com/servers.json"
 };
 
 function MozambiqueAPI(apiKey) {
@@ -50,5 +51,10 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
   let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
   return request(this, url);
 };
+
+MozambiqueAPI.prototype.server = function() {
+  let url = DIRECTORY.SERVER_STATUS
+  return request(this, url)
+}
 
 module.exports = MozambiqueAPI;
