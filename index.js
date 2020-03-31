@@ -5,9 +5,13 @@ const BASE_URL = "https://api.mozambiquehe.re";
 const DIRECTORY = {
   SEARCH_URL: BASE_URL + "/bridge?version=4",
   NEWS_URL: BASE_URL + "/news?version=4",
-  SERVER_STATUS: "https://apexlegendsstatus.com/servers.json"
+  SERVER_STATUS: "https://apexlegendsstatus.com/servers.json",
+  MATCH_HISTORY: BASE_URL + "/bridge?"
 };
 
+/**
+ * @param {String} apiKey 
+ */
 function MozambiqueAPI(apiKey) {
   if (!apiKey) {
     throw new Error("API Key missing");
@@ -56,6 +60,21 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
 MozambiqueAPI.prototype.server = function() {
   let url = DIRECTORY.SERVER_STATUS
   return request(this, url)
+}
+
+MozambiqueAPI.prototype.matchs = function(query) {
+  let type
+
+  if (query.player) {
+    type = "player=" + query.player;
+  }
+
+  if (query.uid) {
+    type = "uid=" + query.uid;
+  }
+
+  let url = DIRECTORY.MATCH_HISTORY + type + "&platform" + query.platform + "&auth=" + this.apiKey + "&history=1&action=" + query.action;
+  return request(this, url)  
 }
 
 module.exports = MozambiqueAPI;
