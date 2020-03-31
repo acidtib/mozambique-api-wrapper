@@ -59,5 +59,18 @@ mozambiqueClient.server()
   }).
   catch(function (e) {
     console.log(e);
-  })
+  });
+
+// Get the Match History
+mozambiqueClient.history({
+  "platform": "X1", 
+  "player": "acidtib",
+  "action": "get"
+})
+  .then(function (result) {
+    console.log(result)
+  }).
+  catch(function (e) {
+    console.log(e);
+  });
 ```

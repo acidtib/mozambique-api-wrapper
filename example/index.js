@@ -40,3 +40,15 @@ mozambiqueClient.server()
   catch(function (e) {
     console.log(e);
   })
+
+mozambiqueClient.history({
+  "platform": "X1", 
+  "player": "acidtib",
+  "action": "get"
+})
+  .then(function (result) {
+    console.log(result)
+  }).
+  catch(function (e) {
+    console.log(e);
+  });
