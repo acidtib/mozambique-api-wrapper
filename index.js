@@ -6,7 +6,8 @@ const DIRECTORY = {
   SEARCH_URL: BASE_URL + "/bridge?version=4",
   NEWS_URL: BASE_URL + "/news?version=4",
   SERVER_STATUS: "https://apexlegendsstatus.com/servers.json",
-  MATCH_HISTORY: BASE_URL + "/bridge?"
+  MATCH_HISTORY: BASE_URL + "/bridge?",
+  GAME_DATA: BASE_URL + "/gamedata?"
 };
 
 
@@ -43,9 +44,9 @@ function request(self, url) {
 /**
  * @param {Any} query Query parameters
  * @param {String} query.player Player name
- * @param {Number} query.uid Player UID
+ * @param {String | Number} query.uid Player UID
  * @param {String} query.platform Player platform (PC, PS4, X1)
- * @returns {Any} Json with player info
+ * @returns {JSON} JSON with player info
  */
 MozambiqueAPI.prototype.search = function (query) {
   let type
@@ -65,7 +66,7 @@ MozambiqueAPI.prototype.search = function (query) {
 
 /**
  * @param {String} lang News language (default: en-us)
- * @returns {Array} Apex Legends news
+ * @returns {Array} Array with Apex Legends news
  */
 MozambiqueAPI.prototype.news = function (lang = "en-us") {
   let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
@@ -74,7 +75,7 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
 
 
 /**
- * @returns {Any} Server status for Origin, EA, Apex Legends and Mozambiquehe.re API
+ * @returns {JSON} Server status for Origin, EA, Apex Legends and Mozambiquehe.re API
  */
 MozambiqueAPI.prototype.server = function() {
   let url = DIRECTORY.SERVER_STATUS
@@ -83,13 +84,13 @@ MozambiqueAPI.prototype.server = function() {
 
 
 /**
- * Only avaliable for Mozambiquehe.re API supporters
+ * Avaliable for everyone but with limitations depending on your access type
  * @param {Any} query Query parameters
  * @param {String} query.player Player name
- * @param {Number} query.uid Player UID
+ * @param {String | Number} query.uid Player UID
  * @param {String} query.platform Player platform (PC, PS4, X1)
  * @param {String} query.action Action for the Match History API (info, get, delete, add)
- * @returns {any} Json
+ * @returns {JSON}
  */
 MozambiqueAPI.prototype.history = function(query) {
   let type
@@ -104,6 +105,11 @@ MozambiqueAPI.prototype.history = function(query) {
 
   let url = DIRECTORY.MATCH_HISTORY + type + "&platform" + query.platform + "&auth=" + this.apiKey + "&history=1&action=" + query.action;
   return request(this, url)  
+}
+
+MozambiqueAPI.prototype.gamedata = function(dataType) {
+  let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey
+  return request(this, url)
 }
 
 module.exports = MozambiqueAPI;
