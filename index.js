@@ -12,6 +12,7 @@ const DIRECTORY = {
 
 
 /**
+ * @constructor
  * @param {String} apiKey Your mozambiquehe.re Auth Key
  */
 function MozambiqueAPI(apiKey) {
@@ -42,6 +43,7 @@ function request(self, url) {
 
 
 /**
+ * Search a player using player name or UID
  * @param {Any} query Query parameters
  * @param {String} query.player Player name
  * @param {String | Number} query.uid Player UID
@@ -65,8 +67,9 @@ MozambiqueAPI.prototype.search = function (query) {
 
 
 /**
+ * Get recent news about Apex Legends
  * @param {String} lang News language (default: en-us)
- * @returns {Array} Array with Apex Legends news
+ * @returns {Array}
  */
 MozambiqueAPI.prototype.news = function (lang = "en-us") {
   let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
@@ -75,7 +78,8 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
 
 
 /**
- * @returns {JSON} Server status for Origin, EA, Apex Legends and Mozambiquehe.re API
+ * Get server status for Origin, EA, Apex Legends and Mozambiquehe.re API
+ * @returns {JSON}
  */
 MozambiqueAPI.prototype.server = function() {
   let url = DIRECTORY.SERVER_STATUS
@@ -108,7 +112,7 @@ MozambiqueAPI.prototype.history = function(query) {
 }
 
 /**
- * Get all gamedata avaliable on https://mozambiquehe.re/
+ * Get all game data avaliable on https://mozambiquehe.re/
  * @param {String} dataType Type of data requested (assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns)
  * @returns {JSON}
  */
