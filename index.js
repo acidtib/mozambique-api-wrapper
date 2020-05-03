@@ -1,9 +1,3 @@
-/**
- * Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.
- * @module mozambique-api-wrapper
- */
-
-
 const fetch = require('node-fetch');
 
 const BASE_URL = "https://api.mozambiquehe.re";
@@ -21,7 +15,6 @@ const DIRECTORY = {
  * Core of mozambique-api-wrapper
  * @constructor
  * @param {String} apiKey Your mozambiquehe.re Auth Key
- * @alias module:mozambique-api-wrapper
  */
 function MozambiqueAPI(apiKey) {
   if (!apiKey) {
