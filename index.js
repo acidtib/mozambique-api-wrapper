@@ -1,3 +1,9 @@
+/**
+ * Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.
+ * @module mozambique-api-wrapper
+ */
+
+
 const fetch = require('node-fetch');
 
 const BASE_URL = "https://api.mozambiquehe.re";
@@ -12,8 +18,10 @@ const DIRECTORY = {
 
 
 /**
+ * Core of mozambique-api-wrapper
  * @constructor
  * @param {String} apiKey Your mozambiquehe.re Auth Key
+ * @alias module:mozambique-api-wrapper
  */
 function MozambiqueAPI(apiKey) {
   if (!apiKey) {
@@ -45,11 +53,12 @@ function request(self, url) {
 /**
  * Search a player using player name or UID
  * @param {Any} query Query parameters
- * @param {String} query.player Player name
- * @param {String | Number} query.uid Player UID
- * @param {String} query.platform Player platform (PC, PS4, X1)
- * @returns {JSON} JSON with player info
+ * @param {String} [query.player] Player name
+ * @param {String|Number} [query.uid] Player UID
+ * @param {String} [query.platform] Player platform (PC, PS4, X1)
+ * @returns {JSON} Json with player info
  */
+
 MozambiqueAPI.prototype.search = function (query) {
   let type
 
@@ -68,9 +77,10 @@ MozambiqueAPI.prototype.search = function (query) {
 
 /**
  * Get recent news about Apex Legends
- * @param {String} lang News language (default: en-us)
- * @returns {Array}
+ * @param {String} [lang="en-us"] News language (default: en-us)
+ * @returns {JSON} JSON with an array of Apex Legends news
  */
+
 MozambiqueAPI.prototype.news = function (lang = "en-us") {
   let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
   return request(this, url);
@@ -79,8 +89,9 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
 
 /**
  * Get server status for Origin, EA, Apex Legends and Mozambiquehe.re API
- * @returns {JSON}
+ * @returns {JSON} Json with status of all servers
  */
+
 MozambiqueAPI.prototype.server = function() {
   let url = DIRECTORY.SERVER_STATUS
   return request(this, url)
@@ -90,12 +101,13 @@ MozambiqueAPI.prototype.server = function() {
 /**
  * Avaliable for everyone but with limitations depending on your access type
  * @param {Any} query Query parameters
- * @param {String} query.player Player name
- * @param {String | Number} query.uid Player UID
- * @param {String} query.platform Player platform (PC, PS4, X1)
- * @param {String} query.action Action for the Match History API (info, get, delete, add)
- * @returns {JSON}
+ * @param {String} [query.player] Player name
+ * @param {String|Number} [query.uid] Player UID
+ * @param {String} [query.platform] Player platform (PC, PS4, X1)
+ * @param {String} [query.action] Action for the Match History API (info, get, delete, add)
+ * @returns {JSON} Json differs depending on action parameter See API documentation for more info ()
  */
+
 MozambiqueAPI.prototype.history = function(query) {
   let type
 
@@ -114,8 +126,9 @@ MozambiqueAPI.prototype.history = function(query) {
 /**
  * Get all game data avaliable on https://mozambiquehe.re/
  * @param {String} dataType Type of data requested (assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns)
- * @returns {JSON}
+ * @returns {JSON} Json with requested game data
  */
+
 MozambiqueAPI.prototype.gamedata = function(dataType) {
   let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey
   return request(this, url)
