@@ -70,7 +70,7 @@ MozambiqueAPI.prototype.search = function (query) {
 
 /**
  * Get recent news about Apex Legends
- * @param {String} [lang="en-us"] News language (default: en-us)
+ * @param {String} [lang="en-us"] News language
  * @returns {JSON} JSON with an array of Apex Legends news
  */
 
