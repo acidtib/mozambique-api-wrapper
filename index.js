@@ -71,7 +71,7 @@ MozambiqueAPI.prototype.search = function (query) {
 /**
  * Get recent news about Apex Legends
  * @param {String} [lang="en-us"] News language
- * @returns {JSON} JSON with an array of Apex Legends news
+ * @returns {JSON} Json with an array of Apex Legends news
  */
 
 MozambiqueAPI.prototype.news = function (lang = "en-us") {
@@ -98,7 +98,7 @@ MozambiqueAPI.prototype.server = function() {
  * @param {String|Number} [query.uid] Player UID
  * @param {String} [query.platform] Player platform (PC, PS4, X1)
  * @param {String} [query.action] Action for the Match History API (info, get, delete, add)
- * @returns {JSON} Json differs depending on action parameter See API documentation for more info ()
+ * @returns {JSON} Json differs depending on action parameter See API documentation for more info (https://mozambiquehe.re/api)
  */
 
 MozambiqueAPI.prototype.history = function(query) {
