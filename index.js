@@ -107,6 +107,11 @@ MozambiqueAPI.prototype.history = function(query) {
   return request(this, url)  
 }
 
+/**
+ * Get all gamedata avaliable on https://mozambiquehe.re/
+ * @param {String} dataType Type of data requested (assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns)
+ * @returns {JSON}
+ */
 MozambiqueAPI.prototype.gamedata = function(dataType) {
   let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey
   return request(this, url)
