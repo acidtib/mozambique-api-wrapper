@@ -117,8 +117,11 @@ MozambiqueAPI.prototype.history = function(query) {
 }
 
 /**
- * Get all game data avaliable on https://mozambiquehe.re/
- * @param {String} dataType Type of data requested (assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns)
+ * Get all game data avaliable on https://mozambiquehe.re/ separated by data type
+ * 
+ * Avaliable data types:
+ * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
+ * @param {String} dataType Type of data requested
  * @returns {JSON} Json with requested game data
  */
 
