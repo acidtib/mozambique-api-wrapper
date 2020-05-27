@@ -1,6 +1,6 @@
 {
   "name": "mozambique-api-wrapper",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,10 @@
     {
       "name": "Dainel Vera",
       "url": "https://github.com/arubinofaux"
+    },
+    {
+      "name": "Fernando",
+      "url": "https://github.com/King-BR"
     }
   ],
   "license": "ISC",
