@@ -1,4 +1,4 @@
-const MozambiqueAPI = require('../index');
+const MozambiqueAPI = require('mozambique-api-wrapper');
 
 let mozambiqueClient = new MozambiqueAPI("<API_KEY>");
 
@@ -40,3 +40,25 @@ mozambiqueClient.server()
   catch(function (e) {
     console.log(e);
   })
+
+mozambiqueClient.history({
+  "platform": "X1", 
+  "player": "acidtib",
+  "action": "get"
+})
+  .then(function (result) {
+    console.log(result)
+  }).
+  catch(function (e) {
+    console.log(e);
+  });
+
+mozambiqueClient.gamedata({
+  "datatype": "legends"
+})
+  .then(function (result) {
+    console.log(result)
+  }).
+  catch(function (e) {
+    console.log(e);
+  });

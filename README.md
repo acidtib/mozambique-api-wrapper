@@ -1,6 +1,8 @@
 # Mozambique Here API Wrapper
 A simple wrapper to use the [Mozambique Here API](https://github.com/HugoDerave/ApexLegendsAPI/blob/master/README.md). Please refer to the API docs to undestand the inputs and expected results.
 
+Please refer to [DOCS.md](https://github.com/King-BR/mozambique-api-wrapper/blob/master/DOCS.md) to see a simple documentation for the NPM package
+
 ### Installation
 
 Install the package
@@ -19,9 +21,9 @@ const MozambiqueAPI = require('mozambique-api-wrapper');
 // Create Client instance by passing in API key
 let mozambiqueClient = new MozambiqueAPI("<API_KEY>");
 
-// Search Player
+// Search Player by name
 mozambiqueClient.search({
-  "platform": "X1", 
+  "platform": "X1",
   "player": "acidtib"
 })
   .then(function(result){
@@ -33,7 +35,7 @@ mozambiqueClient.search({
 
 // Search Player by UID
 mozambiqueClient.search({
-  "platform": "X1", 
+  "platform": "X1",
   "uid": "2535428181264092"
 })
   .then(function(result){
@@ -52,12 +54,36 @@ mozambiqueClient.news()
     console.log(e);
   });
 
-// Get the server status
+// Get server status
 mozambiqueClient.server()
   .then(function (result) {
     console.log(result);
   }).
   catch(function (e) {
     console.log(e);
-  })
+  });
+
+// Get the Match History
+mozambiqueClient.history({
+  "platform": "X1",
+  "player": "acidtib",
+  "action": "get"
+})
+  .then(function (result) {
+    console.log(result)
+  }).
+  catch(function (e) {
+    console.log(e);
+  });
+
+// Get game data
+mozambiqueClient.gamedata({
+  "datatype": "legends"
+})
+  .then(function (result) {
+    console.log(result)
+  }).
+  catch(function (e) {
+    console.log(e);
+  });
 ```
