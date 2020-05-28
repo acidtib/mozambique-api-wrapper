@@ -77,9 +77,7 @@ mozambiqueClient.history({
   });
 
 // Get game data
-mozambiqueClient.gamedata({
-  "datatype": "legends"
-})
+mozambiqueClient.gamedata("legends")
   .then(function (result) {
     console.log(result)
   }).
