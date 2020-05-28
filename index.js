@@ -7,12 +7,14 @@ const DIRECTORY = {
   NEWS_URL: BASE_URL + "/news?version=4",
   SERVER_STATUS: "https://apexlegendsstatus.com/servers.json",
   MATCH_HISTORY: BASE_URL + "/bridge?",
-  GAME_DATA: BASE_URL + "/gamedata?"
+  GAME_DATA: BASE_URL + "/gamedata?",
+  MAP_ROTATION: BASE_URL + "/maprotation?"
 };
 
 
 /**
  * Core of mozambique-api-wrapper
+ * 
  * @constructor
  * @param {String} apiKey Your mozambiquehe.re Auth Key
  */
@@ -45,6 +47,7 @@ function request(self, url) {
 
 /**
  * Search a player using player name or UID
+ * 
  * @param {Any} query Query parameters
  * @param {String} [query.player] Player name
  * @param {String|Number} [query.uid] Player UID
@@ -70,6 +73,7 @@ MozambiqueAPI.prototype.search = function (query) {
 
 /**
  * Get recent news about Apex Legends
+ * 
  * @param {String} [lang="en-us"] News language
  * @returns {JSON} Json with an array of Apex Legends news
  */
@@ -82,6 +86,7 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
 
 /**
  * Get server status for Origin, EA, Apex Legends and Mozambiquehe.re API
+ * 
  * @returns {JSON} Json with status of all servers
  */
 
@@ -93,12 +98,13 @@ MozambiqueAPI.prototype.server = function() {
 
 /**
  * Avaliable for everyone but with limitations depending on your access type
+ * 
  * @param {Any} query Query parameters
  * @param {String} [query.player] Player name
  * @param {String|Number} [query.uid] Player UID
  * @param {String} [query.platform] Player platform (PC, PS4, X1)
  * @param {String} [query.action] Action for the Match History API (info, get, delete, add)
- * @returns {JSON} Json differs depending on action parameter See API documentation for more info (https://mozambiquehe.re/api)
+ * @returns {JSON} Json differs depending on action parameter. Please refer to API documentation for more info (https://mozambiquehe.re/api)
  */
 
 MozambiqueAPI.prototype.history = function(query) {
@@ -117,7 +123,7 @@ MozambiqueAPI.prototype.history = function(query) {
 }
 
 /**
- * Get all game data avaliable on https://mozambiquehe.re/ separated by data type
+ * Get all game data avaliable on [mozambiquehe.re](https://mozambiquehe.re/) separated by data type
  * 
  * Avaliable data types:
  * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
@@ -127,6 +133,17 @@ MozambiqueAPI.prototype.history = function(query) {
 
 MozambiqueAPI.prototype.gamedata = function(dataType) {
   let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey
+  return request(this, url)
+}
+
+/**
+ * Get the map rotation
+ * 
+ * @returns {JSON} Json with map rotation data
+ */
+
+MozambiqueAPI.prototype.mapRotation = function() {
+  let url = DIRECTORY.MAP_ROTATION + "auth=" + this.apiKey
   return request(this, url)
 }
 
