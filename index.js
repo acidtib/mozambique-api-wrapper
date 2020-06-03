@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const fs = require('fs')
 
 const BASE_URL = "https://api.mozambiquehe.re";
 
@@ -17,10 +18,14 @@ const DIRECTORY = {
  * 
  * @constructor
  * @param {String} apiKey Your mozambiquehe.re Auth Key
+ * @param {Any} [options] Options for the cache system
+ * @param {Boolean} [options.useCache=true] Whether or not to use the cache system
+ * @param {Number} [options.cacheLifetime=7200000] Cache lifetime
  */
-function MozambiqueAPI(apiKey) {
+
+function MozambiqueAPI(apiKey, options = { useCache: true, cacheLifetime: 7200000}) {
   if (!apiKey) {
-    throw new Error("API Key missing");
+    throw new Error("mozampique-api-wrapper: API Key missing");
   }
   let self = this;
 
@@ -30,6 +35,27 @@ function MozambiqueAPI(apiKey) {
     "User-Agent": "mozambique-api-wrapper",
     "Content-Type": "application/json"
   };
+
+  switch (typeof options.useCache) {
+    case 'boolean': { break; }
+    default:{
+      console.log(`[WARNING] mozampique-api-wrapper: options.useCache expected to be a Boolean (provided: ${typeof options.useCache}). Using default`);
+      options.useCache = true;
+      break;
+    }
+  }
+
+  switch (typeof options.cacheLifetime) {
+    case 'number': { break; }
+    default: {
+      console.log(`[WARNING] mozampique-api-wrapper: options.cacheLifetime expected to be a Number (provided: ${typeof options.cacheLifetime}). Using default`);
+      options.cacheLifetime = 7200000;
+      break;
+    }
+  }
+
+  self.useCache = options.useCache;
+  self.cacheLifetime = options.cacheLifetime
 }
 
 
@@ -44,6 +70,48 @@ function request(self, url) {
     });
 }
 
+
+async function requestCache(self, url, type) {
+  function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  if(self.useCache) {
+    fs.exists('Cache/mozambiqueCache.json', function(existFile) {
+      if(!existFile) {
+        fs.exists('Cache', async function(existDir) {
+          if(!existDir) {
+            fs.mkdir('Cache', function(err) {})
+          }
+          fs.writeFile('Cache/mozambiqueCache.json', '{}', { encoding: 'utf8' }, function(err) {})
+        })
+      }
+    })
+
+    await sleep(500)
+    fs.readFile('Cache/mozambiqueCache.json', async function (err, data) {
+      if (err) return Promise.reject(err);
+
+      data = JSON.parse(data);
+      if (typeof data[`${type}Generated`] !== 'number' || Date.now() >= (data[`${type}Generated`] + self.cacheLifetime)) {
+        data[type] = await request(self, url);
+        data[`${type}Generated`] = Date.now();
+        let json = JSON.stringify(data, null, 2);
+        fs.writeFile('Cache/mozambiqueCache.json', json, { encoding: 'utf8' }, function (err){});
+      }
+    });
+
+    const json = require('./Cache/mozambiqueCache.json');
+    var name = require.resolve('./Cache/mozambiqueCache.json');
+    delete require.cache[name];
+    return json[type];
+
+  } else {
+    return request(self, url);
+  }
+}
 
 /**
  * Search a player using player name or UID
@@ -92,7 +160,7 @@ MozambiqueAPI.prototype.news = function (lang = "en-us") {
 
 MozambiqueAPI.prototype.server = function() {
   let url = DIRECTORY.SERVER_STATUS
-  return request(this, url)
+  return request(this, url);
 }
 
 
@@ -119,7 +187,7 @@ MozambiqueAPI.prototype.history = function(query) {
   }
 
   let url = DIRECTORY.MATCH_HISTORY + type + "&platform" + query.platform + "&auth=" + this.apiKey + "&history=1&action=" + query.action;
-  return request(this, url)  
+  return request(this, url) ; 
 }
 
 /**
@@ -131,9 +199,9 @@ MozambiqueAPI.prototype.history = function(query) {
  * @returns {JSON} Json with requested game data
  */
 
-MozambiqueAPI.prototype.gamedata = function(dataType) {
+MozambiqueAPI.prototype.gamedata = async function(dataType) {
   let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey
-  return request(this, url)
+  return await requestCache(this, url, dataType);
 }
 
 /**
@@ -144,7 +212,7 @@ MozambiqueAPI.prototype.gamedata = function(dataType) {
 
 MozambiqueAPI.prototype.mapRotation = function() {
   let url = DIRECTORY.MAP_ROTATION + "auth=" + this.apiKey
-  return request(this, url)
+  return request(this, url);
 }
 
 module.exports = MozambiqueAPI;
