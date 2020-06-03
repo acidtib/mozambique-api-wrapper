@@ -79,19 +79,19 @@ async function requestCache(self, url, type) {
   }
 
   if(self.useCache) {
-    fs.exists('Cache/mozambiqueCache.json', function(existFile) {
+    fs.exists('./Cache/mozambiqueCache.json', function(existFile) {
       if(!existFile) {
         fs.exists('Cache', async function(existDir) {
           if(!existDir) {
             fs.mkdir('Cache', function(err) {})
           }
-          fs.writeFile('Cache/mozambiqueCache.json', '{}', { encoding: 'utf8' }, function(err) {})
+          fs.writeFile('./Cache/mozambiqueCache.json', '{}', { encoding: 'utf8' }, function(err) {})
         })
       }
     })
 
     await sleep(500)
-    fs.readFile('Cache/mozambiqueCache.json', async function (err, data) {
+    fs.readFile('./Cache/mozambiqueCache.json', async function (err, data) {
       if (err) return Promise.reject(err);
 
       data = JSON.parse(data);
@@ -99,10 +99,11 @@ async function requestCache(self, url, type) {
         data[type] = await request(self, url);
         data[`${type}Generated`] = Date.now();
         let json = JSON.stringify(data, null, 2);
-        fs.writeFile('Cache/mozambiqueCache.json', json, { encoding: 'utf8' }, function (err){});
+        fs.writeFile('./Cache/mozambiqueCache.json', json, { encoding: 'utf8' }, function (err){});
       }
     });
 
+    await sleep(1100)
     const json = require('./Cache/mozambiqueCache.json');
     var name = require.resolve('./Cache/mozambiqueCache.json');
     delete require.cache[name];
