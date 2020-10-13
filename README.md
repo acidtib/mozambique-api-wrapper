@@ -1,7 +1,7 @@
 # Mozambique Here API Wrapper
 A simple wrapper to use the [Mozambique Here API](https://github.com/HugoDerave/ApexLegendsAPI/blob/master/README.md). Please refer to the API docs to undestand the inputs and expected results.
 
-Please refer to [DOCS.md](https://github.com/King-BR/mozambique-api-wrapper/blob/master/DOCS.md) to see a simple documentation for the NPM package
+Please refer to [DOCS.md](https://github.com/arubinofaux/mozambique-api-wrapper/blob/master/DOCS.md) to see a simple documentation for the NPM package
 
 ### Installation
 
