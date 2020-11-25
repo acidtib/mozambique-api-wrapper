@@ -17,13 +17,13 @@ const DIRECTORY = {
  * Core of mozambique-api-wrapper
  * 
  * @constructor
- * @param {String} apiKey Your mozambiquehe.re Auth Key
+ * @param {String} apiKey Your apexlegendsapi Auth Key
  * @param {Any} [options] Options for the cache system
  * @param {Boolean} [options.useCache=true] Whether or not to use the cache system
  * @param {Number} [options.cacheLifetime=1440] Cache lifetime in minutes
  */
 class MozambiqueAPI {
-  constructor(apiKey, options = { useCache: true, cacheLifetime: 1440 }) {
+  constructor(apiKey) {
     if (!apiKey) {
       throw new Error("mozampique-api-wrapper: API Key missing");
     }
@@ -33,27 +33,6 @@ class MozambiqueAPI {
       "User-Agent": "mozambique-api-wrapper",
       "Content-Type": "application/json"
     };
-
-    switch (typeof options.useCache) {
-      case 'boolean': { break; }
-      default: {
-        console.log(`[WARNING] mozampique-api-wrapper: options.useCache expected to be a Boolean (provided: ${typeof options.useCache}). Using default`);
-        options.useCache = true;
-        break;
-      }
-    }
-
-    switch (typeof options.cacheLifetime) {
-      case 'number': { break; }
-      default: {
-        console.log(`[WARNING] mozampique-api-wrapper: options.cacheLifetime expected to be a Number (provided: ${typeof options.cacheLifetime}). Using default`);
-        options.cacheLifetime = 1440;
-        break;
-      }
-    }
-
-    self.useCache = options.useCache;
-    self.cacheLifetime = options.cacheLifetime * 60000;
   }
 
   /**
@@ -63,7 +42,7 @@ class MozambiqueAPI {
    * @param {String} [query.player] Player name
    * @param {String|Number} [query.uid] Player UID
    * @param {String} [query.platform] Player platform (PC, PS4, X1)
-   * @returns {JSON} Json with player info
+   * @returns {Player} Json with player info
    */
   search(query) {
     let type;
@@ -84,7 +63,7 @@ class MozambiqueAPI {
    * Get recent news about Apex Legends
    *
    * @param {String} [lang="en-us"] News language
-   * @returns {JSON} Json with an array of Apex Legends news
+   * @returns {News} Json with an array of Apex Legends news
    */
   news(lang = "en-us") {
     let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
@@ -92,9 +71,9 @@ class MozambiqueAPI {
   }
 
   /**
-   * Get server status for Origin, EA, Apex Legends and Mozambiquehe.re API
+   * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {JSON} Json with status of all servers
+   * @returns {ServerStatus} Json with status of all servers
    */
   server() {
     let url = DIRECTORY.SERVER_STATUS;
@@ -109,7 +88,7 @@ class MozambiqueAPI {
    * @param {String|Number} [query.uid] Player UID
    * @param {String} [query.platform] Player platform (PC, PS4, X1)
    * @param {String} [query.action] Action for the Match History API (info, get, delete, add)
-   * @returns {JSON} Json differs depending on action parameter. Please refer to API documentation for more info (https://mozambiquehe.re/api)
+   * @returns {Object} Json differs depending on action parameter. Please refer to API documentation for more info (https://apexlegendsapi/api)
    */
   history(query) {
     let type;
@@ -127,92 +106,19 @@ class MozambiqueAPI {
   }
 
   /**
-   * Get all game data avaliable on [mozambiquehe.re](https://mozambiquehe.re/) separated by data type
+   * WARNING: endpoint data not updated anymore
+   * 
+   * Get all game data avaliable on [apexlegendsapi](https://apexlegendsapi/) separated by data type
    *
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
    * @param {String} dataType Type of data requested
-   * @returns {JSON} Json with requested game data
+   * @returns {Object} Json with requested game data
    */
-  async gamedata(dataType) {
+  gamedata(dataType) {
     let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey;
     return await requestCache(this, url, dataType);
   }
-  /**
-   * Get the map rotation
-   *
-   * @returns {JSON} Json with map rotation data
-   */
-  mapRotation() {
-    let url = DIRECTORY.MAP_ROTATION + "auth=" + this.apiKey;
-    return request(this, url);
-  }
 }
-
-/**
- * @private
- * @param {This} self 
- * @param {String} url 
- */
-function request(self, url) {
-  return fetch(url, {
-    headers: self.headers
-  })
-    .then(function (res) {
-      return res.json();
-    }).catch(function (err) {
-      return Promise.reject(err);
-    });
-}
-
-/**
- * @private
- * @param {This} self 
- * @param {String} url 
- * @param {String} type 
- */
-async function requestCache(self, url, type) {
-  function sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  }
-
-  if(self.useCache) {
-    fs.exists('./Cache/mozambiqueCache.json', function(existFile) {
-      if(!existFile) {
-        fs.exists('./Cache', async function(existDir) {
-          if(!existDir) {
-            fs.mkdir('./Cache', function(err) {})
-          }
-          fs.writeFile('./Cache/mozambiqueCache.json', '{}', { encoding: 'utf8' }, function(err) {})
-        })
-      }
-    })
-
-    await sleep(500)
-    fs.readFile('./Cache/mozambiqueCache.json', async function (err, data) {
-      if (err) return Promise.reject(err);
-
-      data = JSON.parse(data);
-      if (typeof data[`${type}Generated`] !== 'number' || Date.now() >= (data[`${type}Generated`] + self.cacheLifetime)) {
-        data[type] = await request(self, url);
-        data[`${type}Generated`] = Date.now();
-        let json = JSON.stringify(data, null, 2);
-        fs.writeFile('./Cache/mozambiqueCache.json', json, { encoding: 'utf8' }, function (err){});
-      }
-    });
-
-    await sleep(1100)
-    const json = require('./Cache/mozambiqueCache.json');
-    var name = require.resolve('./Cache/mozambiqueCache.json');
-    delete require.cache[name];
-    return json[type];
-
-  } else {
-    return request(self, url);
-  }
-}
-
 
 module.exports = MozambiqueAPI;
