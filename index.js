@@ -5,22 +5,31 @@ const BASE_URL = "https://api.mozambiquehe.re";
 
 const DIRECTORY = {
   SEARCH_URL: BASE_URL + "/bridge?version=4",
-  NEWS_URL: BASE_URL + "/news?version=4",
-  SERVER_STATUS: "https://apexlegendsstatus.com/servers.json",
+  NEWS_URL: BASE_URL + "/news?",
+  SERVER_STATUS: BASE_URL + "/status?",
   MATCH_HISTORY: BASE_URL + "/bridge?",
-  GAME_DATA: BASE_URL + "/gamedata?",
-  MAP_ROTATION: BASE_URL + "/maprotation?"
+  GAME_DATA: BASE_URL + "/gamedata?"
 };
 
+/**
+ * @private
+ */
+function request(self, url) {
+  return fetch(url, {
+    headers: self.headers
+  })
+    .then(function (res) {
+      return res.json();
+    }).catch(function (err) {
+      return Promise.reject(err);
+    });
+}
 
 /**
  * Core of mozambique-api-wrapper
  * 
  * @constructor
  * @param {String} apiKey Your apexlegendsapi Auth Key
- * @param {Any} [options] Options for the cache system
- * @param {Boolean} [options.useCache=true] Whether or not to use the cache system
- * @param {Number} [options.cacheLifetime=1440] Cache lifetime in minutes
  */
 class MozambiqueAPI {
   constructor(apiKey) {
@@ -42,7 +51,7 @@ class MozambiqueAPI {
    * @param {String} [query.player] Player name
    * @param {String|Number} [query.uid] Player UID
    * @param {String} [query.platform] Player platform (PC, PS4, X1)
-   * @returns {Player} Json with player info
+   * @returns {Player} Object with player info
    */
   search(query) {
     let type;
@@ -63,7 +72,7 @@ class MozambiqueAPI {
    * Get recent news about Apex Legends
    *
    * @param {String} [lang="en-us"] News language
-   * @returns {News} Json with an array of Apex Legends news
+   * @returns {News} Object with an array of Apex Legends news
    */
   news(lang = "en-us") {
     let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
@@ -73,7 +82,7 @@ class MozambiqueAPI {
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {ServerStatus} Json with status of all servers
+   * @returns {ServerStatus} Object with status of all servers
    */
   server() {
     let url = DIRECTORY.SERVER_STATUS;
@@ -88,7 +97,7 @@ class MozambiqueAPI {
    * @param {String|Number} [query.uid] Player UID
    * @param {String} [query.platform] Player platform (PC, PS4, X1)
    * @param {String} [query.action] Action for the Match History API (info, get, delete, add)
-   * @returns {Object} Json differs depending on action parameter. Please refer to API documentation for more info (https://apexlegendsapi/api)
+   * @returns {Object} Object differs depending on action parameter. Please refer to API documentation for more info (https://apexlegendsapi/api)
    */
   history(query) {
     let type;
@@ -113,11 +122,11 @@ class MozambiqueAPI {
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
    * @param {String} dataType Type of data requested
-   * @returns {Object} Json with requested game data
+   * @returns {Object} Object with requested game data
    */
   gamedata(dataType) {
     let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey;
-    return await requestCache(this, url, dataType);
+    return request(this, url);
   }
 }
 
