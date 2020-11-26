@@ -1,12 +1,11 @@
 const fetch = require('node-fetch');
-const fs = require('fs')
 
 const BASE_URL = "https://api.mozambiquehe.re";
 
 const DIRECTORY = {
   SEARCH_URL: BASE_URL + "/bridge?version=4",
   NEWS_URL: BASE_URL + "/news?",
-  SERVER_STATUS: BASE_URL + "/status?",
+  SERVER_STATUS: BASE_URL + "/servers?",
   MATCH_HISTORY: BASE_URL + "/bridge?",
   GAME_DATA: BASE_URL + "/gamedata?"
 };
@@ -18,64 +17,58 @@ function request(self, url) {
   return fetch(url, {
     headers: self.headers
   })
-    .then(function (res) {
-      return res.json();
-    }).catch(function (err) {
-      return Promise.reject(err);
-    });
+  .then(function (res) {
+    return res.json();
+  })
+  .catch(function (err) {
+    return Promise.reject(err);
+  });
 }
 
 /**
  * Core of mozambique-api-wrapper
  * 
  * @constructor
- * @param {String} apiKey Your apexlegendsapi Auth Key
+ * @param {String} apiKey Your [apexlegendsapi](https://apexlegendsapi.com) Auth Key
  */
 class MozambiqueAPI {
   constructor(apiKey) {
-    if (!apiKey) {
-      throw new Error("mozampique-api-wrapper: API Key missing");
-    }
+    if (!apiKey) throw new Error("mozampique-api-wrapper: API Key missing");
+
     let self = this;
     self.apiKey = apiKey;
     self.headers = {
       "User-Agent": "mozambique-api-wrapper",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": self.apiKey
     };
   }
 
   /**
    * Search a player using player name or UID
    *
-   * @param {Any} query Query parameters
+   * @param {Object} query Query parameters
    * @param {String} [query.player] Player name
    * @param {String|Number} [query.uid] Player UID
    * @param {String} [query.platform] Player platform (PC, PS4, X1)
-   * @returns {Player} Object with player info
+   * @returns {Object} Object with player info
    */
   search(query) {
     let type;
-
-    if (query.player) {
-      type = "player=" + query.player;
-    }
-
-    if (query.uid) {
-      type = "uid=" + query.uid;
-    }
-
-    let url = DIRECTORY.SEARCH_URL + "&platform=" + query.platform + "&" + type + "&auth=" + this.apiKey;
+    if (query.player) type = "player=" + query.player;
+    if (query.uid) type = "uid=" + query.uid;
+    let url = DIRECTORY.SEARCH_URL + "&platform=" + query.platform + "&" + type;
     return request(this, url);
   }
 
   /**
    * Get recent news about Apex Legends
    *
-   * @param {String} [lang="en-us"] News language
-   * @returns {News} Object with an array of Apex Legends news
+   * @param {String} [lang="en-us"] Language of the news
+   * @returns {Array} Array of Apex Legends news
    */
   news(lang = "en-us") {
-    let url = DIRECTORY.NEWS_URL + "&lang=" + lang + "&auth=" + this.apiKey;
+    let url = DIRECTORY.NEWS_URL + "lang=" + lang;
     return request(this, url);
   }
 
@@ -90,42 +83,34 @@ class MozambiqueAPI {
   }
 
   /**
-   * Avaliable for everyone but with limitations depending on your access type
+   * Avaliable for everyone but with limitations depending on your api access type
    *
-   * @param {Any} query Query parameters
+   * @param {Object} query Query parameters
    * @param {String} [query.player] Player name
    * @param {String|Number} [query.uid] Player UID
    * @param {String} [query.platform] Player platform (PC, PS4, X1)
    * @param {String} [query.action] Action for the Match History API (info, get, delete, add)
-   * @returns {Object} Object differs depending on action parameter. Please refer to API documentation for more info (https://apexlegendsapi/api)
+   * @returns {Object} Object differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info 
    */
   history(query) {
     let type;
-
-    if (query.player) {
-      type = "player=" + query.player;
-    }
-
-    if (query.uid) {
-      type = "uid=" + query.uid;
-    }
-
-    let url = DIRECTORY.MATCH_HISTORY + type + "&platform" + query.platform + "&auth=" + this.apiKey + "&history=1&action=" + query.action;
+    if (query.player) type = "player=" + query.player;
+    if (query.uid) type = "uid=" + query.uid;
+    let url = DIRECTORY.MATCH_HISTORY + type + "&platform" + query.platform + "&history=1&action=" + query.action;
     return request(this, url);
   }
 
   /**
    * WARNING: endpoint data not updated anymore
    * 
-   * Get all game data avaliable on [apexlegendsapi](https://apexlegendsapi/) separated by data type
-   *
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
+   * @deprecated data not update anymore
    * @param {String} dataType Type of data requested
    * @returns {Object} Object with requested game data
    */
   gamedata(dataType) {
-    let url = DIRECTORY.GAME_DATA + "type=" + dataType + "&auth=" + this.apiKey;
+    let url = DIRECTORY.GAME_DATA + "type=" + dataType;
     return request(this, url);
   }
 }
