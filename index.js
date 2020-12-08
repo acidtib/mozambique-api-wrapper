@@ -29,7 +29,7 @@ function request(self, url) {
  * Core of mozambique-api-wrapper
  * 
  * @constructor
- * @param {String} apiKey Your [apexlegendsapi](https://apexlegendsapi.com) Auth Key
+ * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
  */
 class MozambiqueAPI {
   constructor(apiKey) {
@@ -75,7 +75,7 @@ class MozambiqueAPI {
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {ServerStatus} Object with status of all servers
+   * @returns {Object} Object with status of all servers
    */
   server() {
     let url = DIRECTORY.SERVER_STATUS;
@@ -98,6 +98,24 @@ class MozambiqueAPI {
     if (query.uid) type = "uid=" + query.uid;
     let url = DIRECTORY.MATCH_HISTORY + type + "&platform" + query.platform + "&history=1&action=" + query.action;
     return request(this, url);
+  }
+
+  
+  /**
+   * Compare two players
+   *
+   * @param {Object} query1 Query parameters
+   * @param {String} [query1.player] Player name
+   * @param {String|Number} [query1.uid] Player UID
+   * @param {String} [query1.platform] Player platform (PC, PS4, X1)
+   * @param {Object} query2 Query parameters
+   * @param {String} [query2.player] Player name
+   * @param {String|Number} [query2.uid] Player UID
+   * @param {String} [query2.platform] Player platform (PC, PS4, X1)
+   * @returns {Object}
+   */
+  compare(query1, query2) {
+
   }
 
   /**

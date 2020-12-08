@@ -80,6 +80,7 @@ mozambiqueClient.history({
   });
 
 // Get game data
+// WARNING: Deprecated, data not updated
 mozambiqueClient.gamedata("legends")
   .then(function (result) {
     console.log(result)
