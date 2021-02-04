@@ -1,4 +1,20 @@
-﻿<a name="MozambiqueAPI"></a>
+## Classes
+
+<dl>
+<dt><a href="#MozambiqueAPI">MozambiqueAPI</a></dt>
+<dd><p>Core of mozambique-api-wrapper</p>
+</dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#PlayerObject">PlayerObject</a> : <code>Object</code></dt>
+<dd><p>Player object</p>
+</dd>
+</dl>
+
+<a name="MozambiqueAPI"></a>
 
 ## MozambiqueAPI
 Core of mozambique-api-wrapper
@@ -7,44 +23,39 @@ Core of mozambique-api-wrapper
 
 * [MozambiqueAPI](#MozambiqueAPI)
     * [new MozambiqueAPI(apiKey)](#new_MozambiqueAPI_new)
-    * [.search(query)](#MozambiqueAPI+search) => <code>Object</code>
+    * [.search(query)](#MozambiqueAPI+search) => [<code>PlayerObject</code>](#PlayerObject)
     * [.news([lang])](#MozambiqueAPI+news) => <code>Array</code>
-    * [.server()](#MozambiqueAPI+server) => <code>ServerStatus</code>
-    * [.history(query)](#MozambiqueAPI+history) => <code>Object</code>
+    * [.server()](#MozambiqueAPI+server) => <code>Object</code>
+    * [.history(query, action)](#MozambiqueAPI+history) => <code>Object</code>
+    * [.compare(query1, query2)](#MozambiqueAPI+compare) => [<code>PlayerObject</code>](#PlayerObject)
     * ~~[.gamedata(dataType)](#MozambiqueAPI+gamedata) => <code>Object</code>~~
 
 <a name="new_MozambiqueAPI_new"></a>
 
-<br>
-
-## new MozambiqueAPI(apiKey)
+### new MozambiqueAPI(apiKey)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| apiKey | <code>String</code> | Your [apexlegendsapi](https://apexlegendsapi.com) Auth Key |
+| apiKey | <code>String</code> | Your [Apex Legends API](https://apexlegendsapi.com) Auth Key |
 
 <a name="MozambiqueAPI+search"></a>
 
-<br>
-
-## mozambiqueAPI.search(query) => <code>Object</code>
+### mozambiqueAPI.search(query) => [<code>PlayerObject</code>](#PlayerObject)
 Search a player using player name or UID
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
-**Returns**: <code>Object</code> - Object with player info  
+**Returns**: [<code>PlayerObject</code>](#PlayerObject) - Object with player info  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | query | <code>Object</code> | Query parameters |
 | [query.player] | <code>String</code> | Player name |
 | [query.uid] | <code>String</code> \| <code>Number</code> | Player UID |
-| [query.platform] | <code>String</code> | Player platform (PC, PS4, X1) |
+| [query.platform] | <code>String</code> | Player platform |
 
 <a name="MozambiqueAPI+news"></a>
 
-<br>
-
-## mozambiqueAPI.news([lang]) => <code>Array</code>
+### mozambiqueAPI.news([lang]) => <code>Array</code>
 Get recent news about Apex Legends
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
@@ -56,36 +67,48 @@ Get recent news about Apex Legends
 
 <a name="MozambiqueAPI+server"></a>
 
-<br>
-
-## mozambiqueAPI.server() => <code>Object</code>
+### mozambiqueAPI.server() => <code>Object</code>
 Get server status for Origin, EA, Apex Legends and apexlegendsapi API
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 **Returns**: <code>Object</code> - Object with status of all servers  
 <a name="MozambiqueAPI+history"></a>
 
-<br>
-
-## mozambiqueAPI.history(query) => <code>Object</code>
+### mozambiqueAPI.history(query, action) => <code>Object</code>
 Avaliable for everyone but with limitations depending on your api access type
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
-**Returns**: <code>Object</code> - Object differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info  
+**Returns**: <code>Object</code> - Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | query | <code>Object</code> | Query parameters |
 | [query.player] | <code>String</code> | Player name |
 | [query.uid] | <code>String</code> \| <code>Number</code> | Player UID |
-| [query.platform] | <code>String</code> | Player platform (PC, PS4, X1) |
-| [query.action] | <code>String</code> | Action for the Match History API (info, get, delete, add) |
+| [query.platform] | <code>String</code> | Player platform |
+| action | <code>String</code> | Action for the Match History API (info, get, delete, add) |
+
+<a name="MozambiqueAPI+compare"></a>
+
+### mozambiqueAPI.compare(query1, query2) => [<code>PlayerObject</code>](#PlayerObject)
+Compare two players
+
+**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| query1 | <code>Object</code> | Query parameters |
+| [query1.player] | <code>String</code> | Player name |
+| [query1.uid] | <code>String</code> \| <code>Number</code> | Player UID |
+| [query1.platform] | <code>String</code> | Player platform |
+| query2 | <code>Object</code> | Query parameters |
+| [query2.player] | <code>String</code> | Player name |
+| [query2.uid] | <code>String</code> \| <code>Number</code> | Player UID |
+| [query2.platform] | <code>String</code> | Player platform |
 
 <a name="MozambiqueAPI+gamedata"></a>
 
-<br>
-
-## ~~mozambiqueAPI.gamedata(dataType) => <code>Object</code>~~
+### ~~mozambiqueAPI.gamedata(dataType) => <code>Object</code>~~
 ***Deprecated***
 
 WARNING: endpoint data not updated anymore
@@ -99,4 +122,71 @@ assault_rifles, attachments, consumables, equipment, grenades, legends, light_ma
 | Param | Type | Description |
 | --- | --- | --- |
 | dataType | <code>String</code> | Type of data requested |
+
+<a name="PlayerObject"></a>
+
+## PlayerObject : <code>Object</code>
+Player object
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| global | <code>Object</code> | 
+| global.name | <code>String</code> | 
+| global.uid | <code>Number</code> | 
+| global.avatar | <code>String</code> | 
+| global.platform | <code>String</code> | 
+| global.level | <code>Number</code> | 
+| global.toNextLevelPercent | <code>Number</code> | 
+| global.internalUpdateCount | <code>Number</code> | 
+| global.bans | <code>Object</code> | 
+| global.bans.isActive | <code>Boolean</code> | 
+| global.bans.remainingSeconds | <code>Number</code> | 
+| global.bans.last_banReason | <code>String</code> | 
+| global.rank | <code>Object</code> | 
+| global.rank.rankScore | <code>Number</code> | 
+| global.rank.rankName | <code>String</code> | 
+| global.rank.rankDiv | <code>Number</code> | 
+| global.rank.ladderPos | <code>Number</code> | 
+| global.rank.rankImg | <code>String</code> | 
+| global.rank.rankedSeason | <code>String</code> | 
+| global.battlepass | <code>Object</code> | 
+| global.battlepass.level | <code>String</code> | 
+| global.battlepass.history | <code>Object</code> | 
+| global.battlepass.history.season1 | <code>Number</code> | 
+| global.battlepass.history.season2 | <code>Number</code> | 
+| global.battlepass.history.season3 | <code>Number</code> | 
+| global.battlepass.history.season4 | <code>Number</code> | 
+| global.battlepass.history.season5 | <code>Number</code> | 
+| global.battlepass.history.season6 | <code>Number</code> | 
+| global.battlepass.history.season7 | <code>Number</code> | 
+| realtime | <code>Object</code> | 
+| realtime.lobbyState | <code>String</code> | 
+| realtime.isOnline | <code>Number</code> | 
+| realtime.isInGame | <code>Number</code> | 
+| realtime.canJoin | <code>Number</code> | 
+| realtime.partyFull | <code>Number</code> | 
+| realtime.selectedLegend | <code>String</code> | 
+| legends | <code>Object</code> | 
+| legends.selected | <code>Object</code> | 
+| legends.selected.LegendName | <code>String</code> | 
+| legends.selected.data | <code>Array</code> | 
+| legends.selected.data[].name | <code>String</code> | 
+| legends.selected.data[].value | <code>String</code> \| <code>Number</code> | 
+| legends.selected.data[].key | <code>String</code> | 
+| legends.selected.ImgAssets | <code>Object</code> | 
+| legends.selected.ImgAssets.icon | <code>String</code> | 
+| legends.selected.ImgAssets.banner | <code>String</code> | 
+| legends.all | <code>Object</code> | 
+| mozambiquehere_internal | <code>Object</code> | 
+| mozambiquehere_internal.isNewToDB | <code>Boolean</code> | 
+| mozambiquehere_internal.claimedBy | <code>String</code> | 
+| mozambiquehere_internal.APIAccessType | <code>String</code> | 
+| mozambiquehere_internal.ClusterID | <code>String</code> | 
+| mozambiquehere_internal.rate_limit | <code>Object</code> | 
+| mozambiquehere_internal.rate_limit.max_per_second | <code>Number</code> | 
+| mozambiquehere_internal.rate_limit.current_req | <code>String</code> | 
+| total | <code>Object</code> | 
 
