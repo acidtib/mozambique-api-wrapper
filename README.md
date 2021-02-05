@@ -21,8 +21,8 @@ $ npm install --save mozambique-api-wrapper
 // Require Wrapper Library
 const MozambiqueAPI = require('mozambique-api-wrapper');
 
-// Create Client instance by passing in API key
-let mozambiqueClient = new MozambiqueAPI("<API_KEY>");
+// Create Client instance by passing in API key and an optional parameter to choose which API version to use (default will always be the latest version, currently 5)
+let mozambiqueClient = new MozambiqueAPI("<API_KEY>", 5);
 
 // Search Player by name
 mozambiqueClient.search({

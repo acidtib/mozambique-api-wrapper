@@ -1,0 +1,1 @@
+const MozambiqueAPI = require("../index.js");

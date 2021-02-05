@@ -4,19 +4,26 @@
   "description": "Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "gendoc": "node docs/gendoc.js",
+    "test": "node tests/index.js",
+    "prepare": "npm run gendoc"
+  },
+  "author": {
+    "name": "Dainel Vera",
+    "url": "https://github.com/arubinofaux"
   },
   "contributors": [
-    {
-      "name": "Dainel Vera",
-      "url": "https://github.com/arubinofaux"
-    },
     {
       "name": "Fernando",
       "url": "https://github.com/King-BR"
     }
   ],
-  "license": "ISC",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "license": "MIT",
   "keywords": [
     "Apex Legends",
     "API"
@@ -24,5 +31,8 @@
   "dependencies": {
     "node-fetch": "^2.6.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "fs": "0.0.1-security",
+    "jsdoc-to-markdown": "^6.0.1"
+  }
 }

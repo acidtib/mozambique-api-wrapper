@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const BASE_URL = "https://api.mozambiquehe.re";
 
 const DIRECTORY = {
-  SEARCH_URL: BASE_URL + "/bridge?version=4",
+  SEARCH_URL: BASE_URL + "/bridge?version={v}",
   NEWS_URL: BASE_URL + "/news?",
   SERVER_STATUS: BASE_URL + "/servers?",
   MATCH_HISTORY: BASE_URL + "/bridge?",
@@ -12,8 +12,29 @@ const DIRECTORY = {
 
 //#region Typedefs
 /**
+ * Legend object
+ * @typedef {Object} Legend
+ * @property {String} LegendName
+ * @property {Array} data
+ * @property {String} data[].name
+ * @property {String|Number} data[].value
+ * @property {String} data[].key
+ * @property {Object} gameInfo
+ * @property {String} gameInfo.skin
+ * @property {String} gameInfo.frame
+ * @property {String} gameInfo.pose
+ * @property {String} gameInfo.intro
+ * @property {Array} gameInfo.badges
+ * @property {String} gameInfo.badges[].name
+ * @property {String|Number} gameInfo.badges[].value
+ * @property {Object} ImgAssets
+ * @property {String} ImgAssets.icon
+ * @property {String} ImgAssets.banner
+ */
+
+/**
  * Player object
- * @typedef {Object} PlayerObject
+ * @typedef {Object} Player
  * @property {Object} global
  * @property {String} global.name
  * @property {Number} global.uid
@@ -43,6 +64,7 @@ const DIRECTORY = {
  * @property {Number} global.battlepass.history.season5
  * @property {Number} global.battlepass.history.season6
  * @property {Number} global.battlepass.history.season7
+ * @property {Number} global.battlepass.history.season8
  * 
  * @property {Object} realtime
  * @property {String} realtime.lobbyState
@@ -53,16 +75,23 @@ const DIRECTORY = {
  * @property {String} realtime.selectedLegend
  * 
  * @property {Object} legends
- * @property {Object} legends.selected
- * @property {String} legends.selected.LegendName
- * @property {Array} legends.selected.data
- * @property {String} legends.selected.data[].name
- * @property {String|Number} legends.selected.data[].value
- * @property {String} legends.selected.data[].key
- * @property {Object} legends.selected.ImgAssets
- * @property {String} legends.selected.ImgAssets.icon
- * @property {String} legends.selected.ImgAssets.banner
+ * @property {Legend} legends.selected
  * @property {Object} legends.all
+ * @property {Legend} legends.all.Bangalore
+ * @property {Legend} legends.all.Bloodhound
+ * @property {Legend} legends.all.Lifeline
+ * @property {Legend} legends.all.Caustic
+ * @property {Legend} legends.all.Gibraltar
+ * @property {Legend} legends.all.Mirage
+ * @property {Legend} legends.all.Pathfinder
+ * @property {Legend} legends.all.Wraith
+ * @property {Legend} legends.all.Octane
+ * @property {Legend} legends.all.Wattson
+ * @property {Legend} legends.all.Crypto
+ * @property {Legend} legends.all.Revenant
+ * @property {Legend} legends.all.Loba
+ * @property {Legend} legends.all.Rampart
+ * @property {Legend} legends.all.Horizon
  * 
  * @property {Object} mozambiquehere_internal
  * @property {Boolean} mozambiquehere_internal.isNewToDB
@@ -86,7 +115,7 @@ const DIRECTORY = {
  * @param {String} url
  */
 function request(self, url) {
-  return fetch(url, {
+  return fetch(url.replace(/\{v\}/g, self.version), {
     headers: self.headers
   })
   .then(function (res) {
@@ -104,13 +133,15 @@ function request(self, url) {
  * 
  * @constructor
  * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
+ * @param {Number} [version=5] API version to use
  */
 class MozambiqueAPI {
-  constructor(apiKey) {
+  constructor(apiKey, version = 5) {
     if (!apiKey) throw new Error("[ERROR] mozampique-api-wrapper: API Key missing");
 
     let self = this;
     self.apiKey = apiKey;
+    self.version = version;
     self.headers = {
       "User-Agent": "mozambique-api-wrapper",
       "Content-Type": "application/json",
@@ -125,7 +156,7 @@ class MozambiqueAPI {
    * @param {String} [query.player] - Player name
    * @param {String|Number} [query.uid] - Player UID
    * @param {String} [query.platform] - Player platform
-   * @returns {PlayerObject} Object with player info
+   * @returns {Player} Object with player info
    */
   search(query) {
     let type;
@@ -186,15 +217,14 @@ class MozambiqueAPI {
    * @param {String} [query2.player] - Player name
    * @param {String|Number} [query2.uid] - Player UID
    * @param {String} [query2.platform] - Player platform
-   * @returns {PlayerObject}
+   * @returns {ComparedPlayers}
    */
   async compare(query1, query2) {
     if(!query1.platform || !query2.platform) throw new Error("Platform required");
     
     var DataObj = {
       players: [],
-      compared: {},
-      keys: []
+      comparedData: {}
     };
 
     if(query1.platform == query2.platform) {
