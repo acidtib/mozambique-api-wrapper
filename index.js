@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const BASE_URL = "https://api.mozambiquehe.re";
 
 const DIRECTORY = {
-  SEARCH_URL: BASE_URL + "/bridge?version={v}",
+  SEARCH_URL: BASE_URL + "/bridge?version=",
   NEWS_URL: BASE_URL + "/news?",
   SERVER_STATUS: BASE_URL + "/servers?",
   MATCH_HISTORY: BASE_URL + "/bridge?",
@@ -19,7 +19,7 @@ const DIRECTORY = {
  * @param {String} url
  */
 function request(self, url) {
-  return fetch(url.replace(/\{v\}/g, self.version), {
+  return fetch(url, {
     headers: self.headers
   })
   .then(function (res) {
@@ -66,7 +66,7 @@ class MozambiqueAPI {
     let type;
     if (query.player) type = "player=" + query.player;
     if (query.uid) type = "uid=" + query.uid;
-    let url = DIRECTORY.SEARCH_URL + "&platform=" + query.platform + "&" + type;
+    let url = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query.platform + "&" + type;
     return request(this, url);
   }
 
@@ -130,30 +130,30 @@ class MozambiqueAPI {
    */
   async compare(query1, query2) {
     if(!query1.platform || !query2.platform) throw new Error("Platform required");
-    
+
     var DataObj = {
       players: [],
       comparedData: {}
     };
 
-    if(query1.platform == query2.platform) {
+    if(query1.platform === query2.platform) {
       let type;
       if (query1.player) type = `player=${query1.player},${query2.player}`;
       if (query1.uid) type = `uid=${query1.uid},${query2.uid}`;
-      let url = DIRECTORY.SEARCH_URL + "&platform=" + query1.platform + "&" + type;
+      let url = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query1.platform + "&" + type;
       DataObj.players = await request(this, url);
     } else {
       
       let type1;
       if (query1.player) type1 = "player=" + query1.player;
       if (query1.uid) type1 = "uid=" + query1.uid;
-      let url1 = DIRECTORY.SEARCH_URL + "&platform=" + query1.platform + "&" + type1;
+      let url1 = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query1.platform + "&" + type1;
       DataObj.players[0] = await request(this, url1);
 
       let type2;
       if (query2.player) type2 = "player=" + query2.player;
       if (query2.uid) type2 = "uid=" + query2.uid;
-      let url2 = DIRECTORY.SEARCH_URL + "&platform=" + query2.platform + "&" + type2;
+      let url2 = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query2.platform + "&" + type2;
       DataObj.players[1] = await request(this, url2);
     }
 

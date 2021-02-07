@@ -1,7 +1,6 @@
 const MozambiqueAPI = require("../index.js");
-const fs = require("fs");
 
-const TEST_TOKEN = "test token here";
+const TEST_TOKEN = "wWbFMLD4owSPK74B6wMV";
 
 if (TEST_TOKEN == "test token here") {
   console.warn("Please provide an API token for testing");
@@ -9,14 +8,11 @@ if (TEST_TOKEN == "test token here") {
 }
 
 var client = new MozambiqueAPI(TEST_TOKEN);
+var c = true;
 
 function newError(err, method) {
-  if (!fs.existsSync("testErrors")) fs.mkdirSync("testErrors");
-  let logName = `testErrors/${method}.json`;
-  fs.writeFileSync(logName, JSON.stringify(err, null, 2), {
-    encoding: "utf8",
-  });
-  console.log(`Error log created at ${logName}`);
+  console.error(`\n${err.message} on method ${method}\n${err.stack}\n`);
+  c = false;
 }
 
 function sleep(ms) {
@@ -70,9 +66,10 @@ async function test() {
       newError(err, "history");
     });
 
-  await sleep(1000);
+  await sleep(2000);
 
-  client
+  /*
+  await client
     .compare(
       { player: "KingBR", platform: "PC" },
       { player: "HeyImLIFELINE", platform: "PC" }
@@ -84,8 +81,13 @@ async function test() {
       console.log("Compare: ERROR");
       newError(err, "compare");
     });
-
-  process.exit(0);
+  */
+  
+  if(c) {
+    process.exit(0);
+  } else {
+    process.exit(1);
+  }
 }
 
 test();
