@@ -67,10 +67,9 @@ mozambiqueClient.server()
   });
 
 // Get the Match History
-mozambiqueClient.history({
+mozambiqueClient.history("get", {
   "platform": "X1",
-  "player": "acidtib",
-  "action": "get"
+  "player": "acidtib"
 })
   .then(function (result) {
     console.log(result)
