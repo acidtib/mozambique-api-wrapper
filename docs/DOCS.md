@@ -116,7 +116,7 @@ Avaliable for everyone but with limitations depending on your api access type
 <a name="MozambiqueAPI+compare"></a>
 
 ### mozambiqueAPI.compare(query1, query2) ⇒ [<code>ComparedData</code>](#ComparedData)
-Compare two players
+Compare two players (WIP)
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 

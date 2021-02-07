@@ -125,10 +125,9 @@ class MozambiqueAPI {
     return request(this, url);
   }
 
-  
   /**
-   * Compare two players
-   *
+   * Compare two players (WIP)
+   * 
    * @param {Object} query1 - Query parameters
    * @param {String} [query1.player] - Player name
    * @param {String|Number} [query1.uid] - Player UID
@@ -174,8 +173,6 @@ class MozambiqueAPI {
       let url2 = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query2.platform + "&" + type2;
       DataObj.players[1] = await request(this, url2);
     }
-
-
 
     return DataObj;
   }
