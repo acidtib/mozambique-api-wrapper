@@ -17,6 +17,7 @@ const DIRECTORY = {
  * @private
  * @param {*} self
  * @param {String} url
+ * @returns {JSON|Promise<Error>}
  */
 function request(self, url) {
   return fetch(url, {
@@ -28,6 +29,16 @@ function request(self, url) {
   .catch(function (err) {
     return Promise.reject(err);
   });
+}
+
+/**
+ * Sleep function
+ * @private
+ * @param {Number} ms - Time in milliseconds
+ * @returns {Promise}
+ */
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 //#endregion
 
@@ -74,7 +85,7 @@ class MozambiqueAPI {
    * Get recent news about Apex Legends
    *
    * @param {String} [lang="en-us"] Language of the news
-   * @returns {Array} Array of Apex Legends news
+   * @returns {ApexNews[]} Array of Apex Legends news
    */
   news(lang = "en-us") {
     let url = DIRECTORY.NEWS_URL + "lang=" + lang;
@@ -84,7 +95,7 @@ class MozambiqueAPI {
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {Object} Object with status of all servers
+   * @returns {ServersObj} Object with status of all servers
    */
   server() {
     let url = DIRECTORY.SERVER_STATUS;
@@ -126,14 +137,21 @@ class MozambiqueAPI {
    * @param {String} [query2.player] - Player name
    * @param {String|Number} [query2.uid] - Player UID
    * @param {String} [query2.platform] - Player platform
-   * @returns {ComparedPlayers}
+   * @returns {ComparedData}
    */
   async compare(query1, query2) {
     if(!query1.platform || !query2.platform) throw new Error("Platform required");
 
     var DataObj = {
       players: [],
-      comparedData: {}
+      data: {
+        trackers: {},
+        badges: {}
+      },
+      keys: {
+        trackers: [],
+        badges: []
+      }
     };
 
     if(query1.platform === query2.platform) {
@@ -142,8 +160,8 @@ class MozambiqueAPI {
       if (query1.uid) type = `uid=${query1.uid},${query2.uid}`;
       let url = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query1.platform + "&" + type;
       DataObj.players = await request(this, url);
+
     } else {
-      
       let type1;
       if (query1.player) type1 = "player=" + query1.player;
       if (query1.uid) type1 = "uid=" + query1.uid;
@@ -156,6 +174,8 @@ class MozambiqueAPI {
       let url2 = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query2.platform + "&" + type2;
       DataObj.players[1] = await request(this, url2);
     }
+
+
 
     return DataObj;
   }
@@ -180,33 +200,12 @@ module.exports = MozambiqueAPI;
 
 //#region JSDoc typedefs
 /**
- * Legend object
- * @typedef {Object} Legend
- * @property {String} LegendName
- * @property {Array} data
- * @property {String} data[].name
- * @property {String|Number} data[].value
- * @property {String} data[].key
- * @property {Object} gameInfo
- * @property {String} gameInfo.skin
- * @property {String} gameInfo.frame
- * @property {String} gameInfo.pose
- * @property {String} gameInfo.intro
- * @property {Array} gameInfo.badges
- * @property {String} gameInfo.badges[].name
- * @property {String|Number} gameInfo.badges[].value
- * @property {Object} ImgAssets
- * @property {String} ImgAssets.icon
- * @property {String} ImgAssets.banner
- */
-
-/**
- * Player object
+ * Player data object
  * @typedef {Object} Player
  * @property {Object} global
- * @property {String} global.name
+ * @property {String} global.name - In-Game player name
  * @property {Number} global.uid
- * @property {String} global.avatar
+ * @property {String} global.avatar - Only available for PC players
  * @property {String} global.platform
  * @property {Number} global.level
  * @property {Number} global.toNextLevelPercent
@@ -223,8 +222,8 @@ module.exports = MozambiqueAPI;
  * @property {String} global.rank.rankImg
  * @property {String} global.rank.rankedSeason
  * @property {Object} global.battlepass
- * @property {String} global.battlepass.level
- * @property {Object} global.battlepass.history
+ * @property {String} global.battlepass.level - Current season battle pass level
+ * @property {Object} global.battlepass.history - Level history for all seasons
  * @property {Number} global.battlepass.history.season1
  * @property {Number} global.battlepass.history.season2
  * @property {Number} global.battlepass.history.season3
@@ -234,7 +233,7 @@ module.exports = MozambiqueAPI;
  * @property {Number} global.battlepass.history.season7
  * @property {Number} global.battlepass.history.season8
  * 
- * @property {Object} realtime
+ * @property {Object} realtime - realtime data
  * @property {String} realtime.lobbyState
  * @property {Number} realtime.isOnline
  * @property {Number} realtime.isInGame
@@ -260,8 +259,9 @@ module.exports = MozambiqueAPI;
  * @property {Legend} legends.all.Loba
  * @property {Legend} legends.all.Rampart
  * @property {Legend} legends.all.Horizon
+ * @property {Legend} legends.all.Fuse
  * 
- * @property {Object} mozambiquehere_internal
+ * @property {Object} mozambiquehere_internal - Internal API data
  * @property {Boolean} mozambiquehere_internal.isNewToDB
  * @property {String} mozambiquehere_internal.claimedBy
  * @property {String} mozambiquehere_internal.APIAccessType
@@ -273,6 +273,37 @@ module.exports = MozambiqueAPI;
  * @property {Object} total
  */
 
+/**
+ * Legend data object
+ * @typedef {Object} Legend
+ * @property {String} LegendName
+ * @property {TrackerObj[]} data
+ * @property {Object} gameInfo
+ * @property {String} gameInfo.skin
+ * @property {String} gameInfo.frame
+ * @property {String} gameInfo.pose
+ * @property {String} gameInfo.intro
+ * @property {BadgeObj[]} gameInfo.badges
+ * @property {Object} ImgAssets
+ * @property {String} ImgAssets.icon
+ * @property {String} ImgAssets.banner
+ */
+
+/**
+ * Tracker data object
+ * @typedef {Object} TrackerObj
+ * @property {String} name
+ * @property {String|Number} value
+ * @property {String} key
+ */
+
+/**
+ * Badge data object
+ * @typedef {Object} BadgeObj
+ * @property {String} name
+ * @property {String|Number} value
+ */
+
  /**
   * Apex Legends News Object
   * @typedef {Object} ApexNews
@@ -281,4 +312,49 @@ module.exports = MozambiqueAPI;
   * @property {String} img
   * @property {String} short_desc
   */
+
+/**
+ * Servers status data object
+ * @typedef {Object} ServersObj
+ * @property {RegionsObj} Origin_login
+ * @property {RegionsObj} EA_novafusion
+ * @property {RegionsObj} EA_accounts
+ * @property {RegionsObj} ApexOauth_PC
+ * @property {RegionsObj} ApexOauth_PS4
+ * @property {RegionsObj} ApexOauth_X1
+ * @property {RegionsObj} ApexOauth_Steam
+ * @property {RegionsObj} ApexOauth_Crossplay
+ * @property {RegionsObj} Mozambiquehere_StatsAPI
+ */
+
+/**
+ * Regions data object
+ * @typedef {Object} RegionsObj
+ * @property {RegionDataObj} EU-West
+ * @property {RegionDataObj} EU-East
+ * @property {RegionDataObj} US-West
+ * @property {RegionDataObj} US-Central
+ * @property {RegionDataObj} US-East
+ * @property {RegionDataObj} SouthAmerica
+ * @property {RegionDataObj} Asia
+ */
+
+/**
+ * Region data object
+ * @typedef {Object} RegionDataObj
+ * @property {String} Status
+ * @property {Number} HTTPCode
+ * @property {Number} ResponseTime
+ * @property {Number} QueryTimestamp
+ */
+
+/**
+ * Compared players data object
+ * @typedef {Object} ComparedData
+ * @property {Player[]} players
+ * @property {Object} data
+ * @property {TrackerObj[]} data.trackers
+ * @property {BadgeObj[]} data.badges
+ */
+
 //#endregion
