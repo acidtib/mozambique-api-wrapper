@@ -15,6 +15,9 @@
 <dt><a href="#Player">Player</a> : <code>Object</code></dt>
 <dd><p>Player object</p>
 </dd>
+<dt><a href="#ApexNews">ApexNews</a> : <code>Object</code></dt>
+<dd><p>Apex Legends News Object</p>
+</dd>
 </dl>
 
 <a name="MozambiqueAPI"></a>
@@ -29,7 +32,7 @@ Core of mozambique-api-wrapper
     * [.search(query)](#MozambiqueAPI+search) ⇒ [<code>Player</code>](#Player)
     * [.news([lang])](#MozambiqueAPI+news) ⇒ <code>Array</code>
     * [.server()](#MozambiqueAPI+server) ⇒ <code>Object</code>
-    * [.history(query, action)](#MozambiqueAPI+history) ⇒ <code>Object</code>
+    * [.history(action, [query])](#MozambiqueAPI+history) ⇒ <code>Object</code>
     * [.compare(query1, query2)](#MozambiqueAPI+compare) ⇒ <code>ComparedPlayers</code>
     * ~~[.gamedata(dataType)](#MozambiqueAPI+gamedata) ⇒ <code>Object</code>~~
 
@@ -78,7 +81,7 @@ Get server status for Origin, EA, Apex Legends and apexlegendsapi API
 **Returns**: <code>Object</code> - Object with status of all servers  
 <a name="MozambiqueAPI+history"></a>
 
-### mozambiqueAPI.history(query, action) ⇒ <code>Object</code>
+### mozambiqueAPI.history(action, [query]) ⇒ <code>Object</code>
 Avaliable for everyone but with limitations depending on your api access type
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
@@ -86,11 +89,11 @@ Avaliable for everyone but with limitations depending on your api access type
 
 | Param | Type | Description |
 | --- | --- | --- |
-| query | <code>Object</code> | Query parameters |
+| action | <code>String</code> | Action for the Match History API (info, get, delete, add) |
+| [query] | <code>Object</code> | Query parameters |
 | [query.player] | <code>String</code> | Player name |
 | [query.uid] | <code>String</code> \| <code>Number</code> | Player UID |
 | [query.platform] | <code>String</code> | Player platform |
-| action | <code>String</code> | Action for the Match History API (info, get, delete, add) |
 
 <a name="MozambiqueAPI+compare"></a>
 
@@ -225,4 +228,19 @@ Player object
 | mozambiquehere_internal.rate_limit.max_per_second | <code>Number</code> | 
 | mozambiquehere_internal.rate_limit.current_req | <code>String</code> | 
 | total | <code>Object</code> | 
+
+<a name="ApexNews"></a>
+
+## ApexNews : <code>Object</code>
+Apex Legends News Object
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| title | <code>String</code> | 
+| link | <code>String</code> | 
+| img | <code>String</code> | 
+| short_desc | <code>String</code> | 
 
