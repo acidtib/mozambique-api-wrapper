@@ -67,10 +67,7 @@ class MozambiqueAPI {
   /**
    * Search a player using player name or UID
    *
-   * @param {Object} query - Query parameters
-   * @param {String} [query.player] - Player name
-   * @param {String|Number} [query.uid] - Player UID
-   * @param {String} [query.platform] - Player platform
+   * @param {PlayerQuery} query - Query parameters
    * @returns {Player} Object with player info
    */
   search(query) {
@@ -106,10 +103,7 @@ class MozambiqueAPI {
    * Avaliable for everyone but with limitations depending on your api access type
    *
    * @param {String} action - Action for the Match History API (info, get, delete, add)
-   * @param {Object} [query] - Query parameters
-   * @param {String} [query.player] - Player name
-   * @param {String|Number} [query.uid] - Player UID
-   * @param {String} [query.platform] - Player platform
+   * @param {PlayerQuery} [query] - Query parameters
    * @returns {Object} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info 
    */
   history(action, query) {
@@ -128,26 +122,17 @@ class MozambiqueAPI {
   /**
    * Compare two players (WIP)
    * 
-   * @param {Object} query1 - Query parameters
-   * @param {String} [query1.player] - Player name
-   * @param {String|Number} [query1.uid] - Player UID
-   * @param {String} [query1.platform] - Player platform
-   * @param {Object} query2 - Query parameters
-   * @param {String} [query2.player] - Player name
-   * @param {String|Number} [query2.uid] - Player UID
-   * @param {String} [query2.platform] - Player platform
+   * @param {PlayerQuery} query1 - Query parameters
+   * @param {PlayerQuery} query2 - Player query parameters
    * @returns {ComparedData}
    */
   async compare(query1, query2) {
     if(!query1.platform || !query2.platform) throw new Error("Platform required");
 
+    /** @type {ComparedData} */
     var DataObj = {
       players: [],
       data: {
-        trackers: {},
-        badges: {}
-      },
-      keys: {
         trackers: [],
         badges: []
       }
@@ -197,11 +182,19 @@ module.exports = MozambiqueAPI;
 
 //#region JSDoc typedefs
 /**
+ * Player query
+ * @typedef {Object} PlayerQuery
+ * @property {String} [player] - Player in-game name, obligatory if uid is not specified
+ * @property {String|Number} [uid] - Player UID, obligatory if player name is not specified
+ * @property {String} platform - Player platform
+ */
+
+/**
  * Player data object
  * @typedef {Object} Player
  * @property {Object} global
  * @property {String} global.name - In-Game player name
- * @property {Number} global.uid
+ * @property {Number} global.uid - Unique identifier
  * @property {String} global.avatar - Only available for PC players
  * @property {String} global.platform
  * @property {Number} global.level
@@ -239,8 +232,8 @@ module.exports = MozambiqueAPI;
  * @property {String} realtime.selectedLegend
  * 
  * @property {Object} legends
- * @property {Legend} legends.selected
- * @property {Object} legends.all
+ * @property {Legend} legends.selected - Current selected legend
+ * @property {Object} legends.all - All legends
  * @property {Legend} legends.all.Bangalore
  * @property {Legend} legends.all.Bloodhound
  * @property {Legend} legends.all.Lifeline
@@ -267,7 +260,8 @@ module.exports = MozambiqueAPI;
  * @property {Number} mozambiquehere_internal.rate_limit.max_per_second
  * @property {String} mozambiquehere_internal.rate_limit.current_req
  * 
- * @property {Object} total
+ * @property {Object} total - Total stats from all legends together
+ * @property {Number} total.kd - Will always be -1 unless kills and death trackers are found
  */
 
 /**
@@ -301,14 +295,14 @@ module.exports = MozambiqueAPI;
  * @property {String|Number} value
  */
 
- /**
-  * Apex Legends News Object
-  * @typedef {Object} ApexNews
-  * @property {String} title
-  * @property {String} link
-  * @property {String} img
-  * @property {String} short_desc
-  */
+/**
+ * Apex Legends News Object
+ * @typedef {Object} ApexNews
+ * @property {String} title
+ * @property {String} link
+ * @property {String} img
+ * @property {String} short_desc
+ */
 
 /**
  * Servers status data object
@@ -353,5 +347,4 @@ module.exports = MozambiqueAPI;
  * @property {TrackerObj[]} data.trackers
  * @property {BadgeObj[]} data.badges
  */
-
 //#endregion

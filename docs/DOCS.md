@@ -9,6 +9,9 @@
 ## Typedefs
 
 <dl>
+<dt><a href="#PlayerQuery">PlayerQuery</a> : <code>Object</code></dt>
+<dd><p>Player query</p>
+</dd>
 <dt><a href="#Player">Player</a> : <code>Object</code></dt>
 <dd><p>Player data object</p>
 </dd>
@@ -73,10 +76,7 @@ Search a player using player name or UID
 
 | Param | Type | Description |
 | --- | --- | --- |
-| query | <code>Object</code> | Query parameters |
-| [query.player] | <code>String</code> | Player name |
-| [query.uid] | <code>String</code> \| <code>Number</code> | Player UID |
-| [query.platform] | <code>String</code> | Player platform |
+| query | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters |
 
 <a name="MozambiqueAPI+news"></a>
 
@@ -108,10 +108,7 @@ Avaliable for everyone but with limitations depending on your api access type
 | Param | Type | Description |
 | --- | --- | --- |
 | action | <code>String</code> | Action for the Match History API (info, get, delete, add) |
-| [query] | <code>Object</code> | Query parameters |
-| [query.player] | <code>String</code> | Player name |
-| [query.uid] | <code>String</code> \| <code>Number</code> | Player UID |
-| [query.platform] | <code>String</code> | Player platform |
+| [query] | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters |
 
 <a name="MozambiqueAPI+compare"></a>
 
@@ -122,14 +119,8 @@ Compare two players (WIP)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| query1 | <code>Object</code> | Query parameters |
-| [query1.player] | <code>String</code> | Player name |
-| [query1.uid] | <code>String</code> \| <code>Number</code> | Player UID |
-| [query1.platform] | <code>String</code> | Player platform |
-| query2 | <code>Object</code> | Query parameters |
-| [query2.player] | <code>String</code> | Player name |
-| [query2.uid] | <code>String</code> \| <code>Number</code> | Player UID |
-| [query2.platform] | <code>String</code> | Player platform |
+| query1 | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters |
+| query2 | [<code>PlayerQuery</code>](#PlayerQuery) | Player query parameters |
 
 <a name="MozambiqueAPI+gamedata"></a>
 
@@ -145,6 +136,20 @@ WARNING: endpoint data not updated anymoreAvaliable data types:assault_rifles
 | --- | --- | --- |
 | dataType | <code>String</code> | Type of data requested |
 
+<a name="PlayerQuery"></a>
+
+## PlayerQuery : <code>Object</code>
+Player query
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [player] | <code>String</code> | Player in-game name, obligatory if uid is not specified |
+| [uid] | <code>String</code> \| <code>Number</code> | Player UID, obligatory if player name is not specified |
+| platform | <code>String</code> | Player platform |
+
 <a name="Player"></a>
 
 ## Player : <code>Object</code>
@@ -157,7 +162,7 @@ Player data object
 | --- | --- | --- |
 | global | <code>Object</code> |  |
 | global.name | <code>String</code> | In-Game player name |
-| global.uid | <code>Number</code> |  |
+| global.uid | <code>Number</code> | Unique identifier |
 | global.avatar | <code>String</code> | Only available for PC players |
 | global.platform | <code>String</code> |  |
 | global.level | <code>Number</code> |  |
@@ -193,8 +198,8 @@ Player data object
 | realtime.partyFull | <code>Number</code> |  |
 | realtime.selectedLegend | <code>String</code> |  |
 | legends | <code>Object</code> |  |
-| legends.selected | [<code>Legend</code>](#Legend) |  |
-| legends.all | <code>Object</code> |  |
+| legends.selected | [<code>Legend</code>](#Legend) | Current selected legend |
+| legends.all | <code>Object</code> | All legends |
 | legends.all.Bangalore | [<code>Legend</code>](#Legend) |  |
 | legends.all.Bloodhound | [<code>Legend</code>](#Legend) |  |
 | legends.all.Lifeline | [<code>Legend</code>](#Legend) |  |
@@ -219,7 +224,8 @@ Player data object
 | mozambiquehere_internal.rate_limit | <code>Object</code> |  |
 | mozambiquehere_internal.rate_limit.max_per_second | <code>Number</code> |  |
 | mozambiquehere_internal.rate_limit.current_req | <code>String</code> |  |
-| total | <code>Object</code> |  |
+| total | <code>Object</code> | Total stats from all legends together |
+| total.kd | <code>Number</code> | Will always be -1 unless kills and death trackers are found |
 
 <a name="Legend"></a>
 
