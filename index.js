@@ -127,7 +127,7 @@ class MozambiqueAPI {
    * @returns {ComparedData}
    */
   async compare(query1, query2) {
-    if(!query1.platform || !query2.platform) throw new Error("Platform required");
+    if(!query1.platform || !query2.platform) throw new Error("[ERROR] mozampique-api-wrapper: Platform required");
 
     /** @type {ComparedData} */
     var DataObj = {
@@ -138,7 +138,7 @@ class MozambiqueAPI {
       }
     };
 
-    if(query1.platform === query2.platform) {
+    if(query1.platform == query2.platform) {
       let type;
       if (query1.player) type = `player=${query1.player},${query2.player}`;
       if (query1.uid) type = `uid=${query1.uid},${query2.uid}`;
@@ -163,11 +163,9 @@ class MozambiqueAPI {
   }
 
   /**
-   * WARNING: endpoint data not updated anymore
-   * 
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
-   * @deprecated data not update anymore
+   * @deprecated data not update
    * @param {String} dataType Type of data requested
    * @returns {Object} Object with requested game data
    */
@@ -261,7 +259,7 @@ module.exports = MozambiqueAPI;
  * @property {String} mozambiquehere_internal.rate_limit.current_req
  * 
  * @property {Object} total - Total stats from all legends together
- * @property {Number} total.kd - Will always be -1 unless kills and death trackers are found
+ * @property {Number} total.kd - Will always be -1 unless kills and games played trackers are found
  */
 
 /**
@@ -319,7 +317,7 @@ module.exports = MozambiqueAPI;
  */
 
 /**
- * Regions data object
+ * Regions object
  * @typedef {Object} RegionsObj
  * @property {RegionDataObj} EU-West
  * @property {RegionDataObj} EU-East
