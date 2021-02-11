@@ -4,7 +4,7 @@ const TEST_TOKEN = "test token here";
 
 if (TEST_TOKEN == "test token here") {
   console.warn("Please provide an API token for testing");
-  process.exit(1);
+  process.exit(0);
 }
 
 var client = new MozambiqueAPI(TEST_TOKEN);
