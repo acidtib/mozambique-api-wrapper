@@ -4,9 +4,9 @@
   "description": "Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.",
   "main": "index.js",
   "scripts": {
-    "genDoc": "node docs/genDoc.js",
+    "gendoc": "node docs/gendoc.js",
     "test": "node tests/index.js",
-    "prepare": "npm run genDoc"
+    "prepare": "npm run gendoc"
   },
   "author": {
     "name": "Dainel Vera",
