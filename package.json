@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "genDoc": "node docs/genDoc.js",
-    "genMin": "node minified/genMin.js",
     "test": "node tests/index.js",
-    "prepare": "npm run genDoc && npm run genMin"
+    "prepare": "npm run genDoc"
   },
   "author": {
     "name": "Dainel Vera",
