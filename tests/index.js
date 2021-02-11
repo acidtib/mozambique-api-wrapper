@@ -1,6 +1,6 @@
 const MozambiqueAPI = require("../index.js");
 
-const TEST_TOKEN = "wWbFMLD4owSPK74B6wMV";
+const TEST_TOKEN = "test token here";
 
 if (TEST_TOKEN == "test token here") {
   console.warn("Please provide an API token for testing");
