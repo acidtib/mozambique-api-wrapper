@@ -7,7 +7,8 @@ const DIRECTORY = {
   NEWS_URL: BASE_URL + "/news?",
   SERVER_STATUS: BASE_URL + "/servers?",
   MATCH_HISTORY: BASE_URL + "/bridge?",
-  GAME_DATA: BASE_URL + "/gamedata?"
+  GAME_DATA: BASE_URL + "/gamedata?",
+  MAP_ROTATION: BASE_URL + "/maprotation?"
 };
 
 //#region Private functions
@@ -104,9 +105,10 @@ class MozambiqueAPI {
    *
    * @param {String} action - Action for the Match History API (info, get, delete, add)
    * @param {PlayerQuery} [query] - Query parameters
+   * @param {Number} [limit] - Limit of events to get on action get
    * @returns {Object} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info 
    */
-  history(action, query) {
+  history(action, query, limit) {
     let q = ''; 
     if(action != "info") {
       let type;
@@ -115,7 +117,19 @@ class MozambiqueAPI {
       q = type + "&platform=" + query.platform + "&";
     }
 
-    let url = DIRECTORY.MATCH_HISTORY + q + "history=1&action=" + action;
+    let l = "";
+    if(!isNaN(limit)) l = "&limit=" + limit;
+
+    let url = DIRECTORY.MATCH_HISTORY + q + "history=1&action=" + action + l;
+    return request(this, url);
+  }
+  
+  /**
+   * Get the map rotation
+   * @returns {MapRotationData}
+   */
+   mapRotation() {
+    let url = DIRECTORY.MAP_ROTATION;
     return request(this, url);
   }
 
@@ -344,5 +358,28 @@ module.exports = MozambiqueAPI;
  * @property {Object} data
  * @property {TrackerObj[]} data.trackers
  * @property {BadgeObj[]} data.badges
+ */
+
+/**
+ * @typedef {Object} MapRotationData
+ * @property {Object} current
+ * @property {Number} current.start
+ * @property {Number} current.end
+ * @property {String} current.readableDate_start
+ * @property {String} current.readableDate_end
+ * @property {String} current.map
+ * @property {Number} current.DurationInSecs
+ * @property {Number} current.DurationInMinutes
+ * @property {Number} current.remainingSecs
+ * @property {Number} current.remainingMins
+ * @property {String} current.remainingTimer
+ * @property {Object} next
+ * @property {Number} next.start
+ * @property {Number} next.end
+ * @property {String} next.readableDate_start
+ * @property {String} next.readableDate_end
+ * @property {String} next.map
+ * @property {Number} next.DurationInSecs
+ * @property {Number} next.DurationInMinutes
  */
 //#endregion
