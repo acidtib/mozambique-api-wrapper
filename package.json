@@ -6,7 +6,8 @@
   "scripts": {
     "gendoc": "node docs/gendoc.js",
     "test": "node tests/index.js",
-    "prepare": "npm run gendoc"
+    "lint": "npx prettier -w .",
+    "prepare": "npm run gendoc & npm run lint"
   },
   "author": {
     "name": "Dainel Vera",
@@ -32,7 +33,13 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "fs": "0.0.1-security",
-    "jsdoc-to-markdown": "^6.0.1"
+    "jsdoc-to-markdown": "^6.0.1",
+    "prettier": "^2.2.1",
+    "prettier-eslint": "^12.0.0"
   }
 }
