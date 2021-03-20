@@ -31,7 +31,7 @@
 <dd><p>Servers status data object</p>
 </dd>
 <dt><a href="#RegionsObj">RegionsObj</a> : <code>Object</code></dt>
-<dd><p>Regions data object</p>
+<dd><p>Regions object</p>
 </dd>
 <dt><a href="#RegionDataObj">RegionDataObj</a> : <code>Object</code></dt>
 <dd><p>Region data object</p>
@@ -39,6 +39,10 @@
 <dt><a href="#ComparedData">ComparedData</a> : <code>Object</code></dt>
 <dd><p>Compared players data object</p>
 </dd>
+<dt><a href="#MapRotationData">MapRotationData</a> : <code>Object</code></dt>
+<dd></dd>
+<dt><a href="#OriginData">OriginData</a> : <code>Object</code></dt>
+<dd></dd>
 </dl>
 
 <a name="MozambiqueAPI"></a>
@@ -54,7 +58,9 @@ Core of mozambique-api-wrapper
   - [.search(query)](#MozambiqueAPI+search) ⇒ [<code>Player</code>](#Player)
   - [.news([lang])](#MozambiqueAPI+news) ⇒ [<code>Array.&lt;ApexNews&gt;</code>](#ApexNews)
   - [.server()](#MozambiqueAPI+server) ⇒ [<code>ServersObj</code>](#ServersObj)
-  - [.history(action, [query])](#MozambiqueAPI+history) ⇒ <code>Object</code>
+  - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Object</code>
+  - [.mapRotation()](#MozambiqueAPI+mapRotation) ⇒ [<code>MapRotationData</code>](#MapRotationData)
+  - [.origin(player, [showAllHits])](#MozambiqueAPI+origin) ⇒ [<code>OriginData</code>](#OriginData) \| [<code>Array.&lt;OriginData&gt;</code>](#OriginData)
   - [.compare(query1, query2)](#MozambiqueAPI+compare) ⇒ [<code>ComparedData</code>](#ComparedData)
   - ~~[.gamedata(dataType)](#MozambiqueAPI+gamedata) ⇒ <code>Object</code>~~
 
@@ -103,7 +109,7 @@ Get server status for Origin, EA, Apex Legends and apexlegendsapi API
 **Returns**: [<code>ServersObj</code>](#ServersObj) - Object with status of all servers  
 <a name="MozambiqueAPI+history"></a>
 
-### mozambiqueAPI.history(action, [query]) ⇒ <code>Object</code>
+### mozambiqueAPI.history(action, [query], [limit]) ⇒ <code>Object</code>
 
 Avaliable for everyone but with limitations depending on your api access type
 
@@ -114,6 +120,27 @@ Avaliable for everyone but with limitations depending on your api access type
 | ------- | ---------------------------------------- | --------------------------------------------------------- |
 | action  | <code>String</code>                      | Action for the Match History API (info, get, delete, add) |
 | [query] | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters                                          |
+| [limit] | <code>Number</code>                      | Limit of events to get on action get                      |
+
+<a name="MozambiqueAPI+mapRotation"></a>
+
+### mozambiqueAPI.mapRotation() ⇒ [<code>MapRotationData</code>](#MapRotationData)
+
+Get the map rotation
+
+**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
+<a name="MozambiqueAPI+origin"></a>
+
+### mozambiqueAPI.origin(player, [showAllHits]) ⇒ [<code>OriginData</code>](#OriginData) \| [<code>Array.&lt;OriginData&gt;</code>](#OriginData)
+
+Search a Origin user
+
+**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)
+
+| Param         | Type                 | Default            | Description                                                                         |
+| ------------- | -------------------- | ------------------ | ----------------------------------------------------------------------------------- |
+| player        | <code>String</code>  |                    | player name                                                                         |
+| [showAllHits] | <code>Boolean</code> | <code>false</code> | If true, get all possible hits for the given player name and returns it in an array |
 
 <a name="MozambiqueAPI+compare"></a>
 
@@ -133,8 +160,6 @@ Compare two players (WIP)
 ### ~~mozambiqueAPI.gamedata(dataType) ⇒ <code>Object</code>~~
 
 **_Deprecated_**
-
-WARNING: endpoint data not updated anymore
 
 Avaliable data types:
 assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
@@ -170,74 +195,74 @@ Player data object
 **Kind**: global typedef  
 **Properties**
 
-| Name                                              | Type                           | Description                                                 |
-| ------------------------------------------------- | ------------------------------ | ----------------------------------------------------------- |
-| global                                            | <code>Object</code>            |                                                             |
-| global.name                                       | <code>String</code>            | In-Game player name                                         |
-| global.uid                                        | <code>Number</code>            | Unique identifier                                           |
-| global.avatar                                     | <code>String</code>            | Only available for PC players                               |
-| global.platform                                   | <code>String</code>            |                                                             |
-| global.level                                      | <code>Number</code>            |                                                             |
-| global.toNextLevelPercent                         | <code>Number</code>            |                                                             |
-| global.internalUpdateCount                        | <code>Number</code>            |                                                             |
-| global.bans                                       | <code>Object</code>            |                                                             |
-| global.bans.isActive                              | <code>Boolean</code>           |                                                             |
-| global.bans.remainingSeconds                      | <code>Number</code>            |                                                             |
-| global.bans.last_banReason                        | <code>String</code>            |                                                             |
-| global.rank                                       | <code>Object</code>            |                                                             |
-| global.rank.rankScore                             | <code>Number</code>            |                                                             |
-| global.rank.rankName                              | <code>String</code>            |                                                             |
-| global.rank.rankDiv                               | <code>Number</code>            |                                                             |
-| global.rank.ladderPos                             | <code>Number</code>            |                                                             |
-| global.rank.rankImg                               | <code>String</code>            |                                                             |
-| global.rank.rankedSeason                          | <code>String</code>            |                                                             |
-| global.battlepass                                 | <code>Object</code>            |                                                             |
-| global.battlepass.level                           | <code>String</code>            | Current season battle pass level                            |
-| global.battlepass.history                         | <code>Object</code>            | Level history for all seasons                               |
-| global.battlepass.history.season1                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season2                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season3                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season4                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season5                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season6                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season7                 | <code>Number</code>            |                                                             |
-| global.battlepass.history.season8                 | <code>Number</code>            |                                                             |
-| realtime                                          | <code>Object</code>            | realtime data                                               |
-| realtime.lobbyState                               | <code>String</code>            |                                                             |
-| realtime.isOnline                                 | <code>Number</code>            |                                                             |
-| realtime.isInGame                                 | <code>Number</code>            |                                                             |
-| realtime.canJoin                                  | <code>Number</code>            |                                                             |
-| realtime.partyFull                                | <code>Number</code>            |                                                             |
-| realtime.selectedLegend                           | <code>String</code>            |                                                             |
-| legends                                           | <code>Object</code>            |                                                             |
-| legends.selected                                  | [<code>Legend</code>](#Legend) | Current selected legend                                     |
-| legends.all                                       | <code>Object</code>            | All legends                                                 |
-| legends.all.Bangalore                             | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Bloodhound                            | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Lifeline                              | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Caustic                               | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Gibraltar                             | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Mirage                                | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Pathfinder                            | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Wraith                                | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Octane                                | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Wattson                               | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Crypto                                | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Revenant                              | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Loba                                  | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Rampart                               | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Horizon                               | [<code>Legend</code>](#Legend) |                                                             |
-| legends.all.Fuse                                  | [<code>Legend</code>](#Legend) |                                                             |
-| mozambiquehere_internal                           | <code>Object</code>            | Internal API data                                           |
-| mozambiquehere_internal.isNewToDB                 | <code>Boolean</code>           |                                                             |
-| mozambiquehere_internal.claimedBy                 | <code>String</code>            |                                                             |
-| mozambiquehere_internal.APIAccessType             | <code>String</code>            |                                                             |
-| mozambiquehere_internal.ClusterID                 | <code>String</code>            |                                                             |
-| mozambiquehere_internal.rate_limit                | <code>Object</code>            |                                                             |
-| mozambiquehere_internal.rate_limit.max_per_second | <code>Number</code>            |                                                             |
-| mozambiquehere_internal.rate_limit.current_req    | <code>String</code>            |                                                             |
-| total                                             | <code>Object</code>            | Total stats from all legends together                       |
-| total.kd                                          | <code>Number</code>            | Will always be -1 unless kills and death trackers are found |
+| Name                                              | Type                           | Description                                                        |
+| ------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------ |
+| global                                            | <code>Object</code>            |                                                                    |
+| global.name                                       | <code>String</code>            | In-Game player name                                                |
+| global.uid                                        | <code>Number</code>            | Unique identifier                                                  |
+| global.avatar                                     | <code>String</code>            | Only available for PC players                                      |
+| global.platform                                   | <code>String</code>            |                                                                    |
+| global.level                                      | <code>Number</code>            |                                                                    |
+| global.toNextLevelPercent                         | <code>Number</code>            |                                                                    |
+| global.internalUpdateCount                        | <code>Number</code>            |                                                                    |
+| global.bans                                       | <code>Object</code>            |                                                                    |
+| global.bans.isActive                              | <code>Boolean</code>           |                                                                    |
+| global.bans.remainingSeconds                      | <code>Number</code>            |                                                                    |
+| global.bans.last_banReason                        | <code>String</code>            |                                                                    |
+| global.rank                                       | <code>Object</code>            |                                                                    |
+| global.rank.rankScore                             | <code>Number</code>            |                                                                    |
+| global.rank.rankName                              | <code>String</code>            |                                                                    |
+| global.rank.rankDiv                               | <code>Number</code>            |                                                                    |
+| global.rank.ladderPos                             | <code>Number</code>            |                                                                    |
+| global.rank.rankImg                               | <code>String</code>            |                                                                    |
+| global.rank.rankedSeason                          | <code>String</code>            |                                                                    |
+| global.battlepass                                 | <code>Object</code>            |                                                                    |
+| global.battlepass.level                           | <code>String</code>            | Current season battle pass level                                   |
+| global.battlepass.history                         | <code>Object</code>            | Level history for all seasons                                      |
+| global.battlepass.history.season1                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season2                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season3                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season4                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season5                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season6                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season7                 | <code>Number</code>            |                                                                    |
+| global.battlepass.history.season8                 | <code>Number</code>            |                                                                    |
+| realtime                                          | <code>Object</code>            | realtime data                                                      |
+| realtime.lobbyState                               | <code>String</code>            |                                                                    |
+| realtime.isOnline                                 | <code>Number</code>            |                                                                    |
+| realtime.isInGame                                 | <code>Number</code>            |                                                                    |
+| realtime.canJoin                                  | <code>Number</code>            |                                                                    |
+| realtime.partyFull                                | <code>Number</code>            |                                                                    |
+| realtime.selectedLegend                           | <code>String</code>            |                                                                    |
+| legends                                           | <code>Object</code>            |                                                                    |
+| legends.selected                                  | [<code>Legend</code>](#Legend) | Current selected legend                                            |
+| legends.all                                       | <code>Object</code>            | All legends                                                        |
+| legends.all.Bangalore                             | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Bloodhound                            | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Lifeline                              | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Caustic                               | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Gibraltar                             | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Mirage                                | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Pathfinder                            | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Wraith                                | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Octane                                | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Wattson                               | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Crypto                                | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Revenant                              | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Loba                                  | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Rampart                               | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Horizon                               | [<code>Legend</code>](#Legend) |                                                                    |
+| legends.all.Fuse                                  | [<code>Legend</code>](#Legend) |                                                                    |
+| mozambiquehere_internal                           | <code>Object</code>            | Internal API data                                                  |
+| mozambiquehere_internal.isNewToDB                 | <code>Boolean</code>           |                                                                    |
+| mozambiquehere_internal.claimedBy                 | <code>String</code>            |                                                                    |
+| mozambiquehere_internal.APIAccessType             | <code>String</code>            |                                                                    |
+| mozambiquehere_internal.ClusterID                 | <code>String</code>            |                                                                    |
+| mozambiquehere_internal.rate_limit                | <code>Object</code>            |                                                                    |
+| mozambiquehere_internal.rate_limit.max_per_second | <code>Number</code>            |                                                                    |
+| mozambiquehere_internal.rate_limit.current_req    | <code>String</code>            |                                                                    |
+| total                                             | <code>Object</code>            | Total stats from all legends together                              |
+| total.kd                                          | <code>Number</code>            | Will always be -1 unless kills and games played trackers are found |
 
 <a name="Legend"></a>
 
@@ -332,7 +357,7 @@ Servers status data object
 
 ## RegionsObj : <code>Object</code>
 
-Regions data object
+Regions object
 
 **Kind**: global typedef  
 **Properties**
@@ -378,3 +403,46 @@ Compared players data object
 | data          | <code>Object</code>                                  |
 | data.trackers | [<code>Array.&lt;TrackerObj&gt;</code>](#TrackerObj) |
 | data.badges   | [<code>Array.&lt;BadgeObj&gt;</code>](#BadgeObj)     |
+
+<a name="MapRotationData"></a>
+
+## MapRotationData : <code>Object</code>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name                       | Type                |
+| -------------------------- | ------------------- |
+| current                    | <code>Object</code> |
+| current.start              | <code>Number</code> |
+| current.end                | <code>Number</code> |
+| current.readableDate_start | <code>String</code> |
+| current.readableDate_end   | <code>String</code> |
+| current.map                | <code>String</code> |
+| current.DurationInSecs     | <code>Number</code> |
+| current.DurationInMinutes  | <code>Number</code> |
+| current.remainingSecs      | <code>Number</code> |
+| current.remainingMins      | <code>Number</code> |
+| current.remainingTimer     | <code>String</code> |
+| next                       | <code>Object</code> |
+| next.start                 | <code>Number</code> |
+| next.end                   | <code>Number</code> |
+| next.readableDate_start    | <code>String</code> |
+| next.readableDate_end      | <code>String</code> |
+| next.map                   | <code>String</code> |
+| next.DurationInSecs        | <code>Number</code> |
+| next.DurationInMinutes     | <code>Number</code> |
+
+<a name="OriginData"></a>
+
+## OriginData : <code>Object</code>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name   | Type                |
+| ------ | ------------------- |
+| name   | <code>String</code> |
+| uid    | <code>String</code> |
+| pid    | <code>String</code> |
+| avatar | <code>String</code> |

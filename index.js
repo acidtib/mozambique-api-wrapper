@@ -133,10 +133,10 @@ class MozambiqueAPI {
   /**
    * Search a Origin user
    * @param {String} player - player name
-   * @param {Boolean} showAllHits - If true, show all possible hits for the given player name
-   * @returns
+   * @param {Boolean} [showAllHits=false] - If true, get all possible hits for the given player name and returns it in an array
+   * @returns {OriginData|OriginData[]}
    */
-  origin(player, showAllHits) {
+  origin(player, showAllHits = false) {
     let url =
       DIRECTORY.ORIGIN +
       "player=" +
@@ -209,7 +209,7 @@ class MozambiqueAPI {
   /**
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
-   * @deprecated data not update
+   * @deprecated data not updated
    * @param {String} dataType Type of data requested
    * @returns {Object} Object with requested game data
    */
@@ -411,5 +411,13 @@ module.exports = MozambiqueAPI;
  * @property {String} next.map
  * @property {Number} next.DurationInSecs
  * @property {Number} next.DurationInMinutes
+ */
+
+/**
+ * @typedef {Object} OriginData
+ * @property {String} name
+ * @property {String} uid
+ * @property {String} pid
+ * @property {String} avatar
  */
 //#endregion
