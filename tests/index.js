@@ -82,8 +82,8 @@ async function test() {
       newError(err, "compare");
     });
   */
-  
-  if(c) {
+
+  if (c) {
     process.exit(0);
   } else {
     process.exit(1);
