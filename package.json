@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "gendoc": "node docs/gendoc.js",
-    "test": "node tests/index.js",
+    "test": "node tests/index.js & npm run lint",
     "lint": "npx prettier -w .",
     "prepare": "npm run gendoc & npm run lint"
   },
