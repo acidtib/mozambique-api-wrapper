@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 
 const BASE_URL = "https://api.mozambiquehe.re";
 
@@ -8,13 +8,14 @@ const DIRECTORY = {
   SERVER_STATUS: BASE_URL + "/servers?",
   MATCH_HISTORY: BASE_URL + "/bridge?",
   GAME_DATA: BASE_URL + "/gamedata?",
-  MAP_ROTATION: BASE_URL + "/maprotation?"
+  MAP_ROTATION: BASE_URL + "/maprotation?",
+  ORIGIN: BASE_URL + "/origin?",
 };
 
 //#region Private functions
 /**
  * Make the request to the API servers
- * 
+ *
  * @private
  * @param {*} self
  * @param {String} url
@@ -22,38 +23,28 @@ const DIRECTORY = {
  */
 function request(self, url) {
   return fetch(url, {
-    headers: self.headers
+    headers: self.headers,
   })
-  .then(function (res) {
-    return res.json();
-  })
-  .catch(function (err) {
-    return Promise.reject(err);
-  });
-}
-
-/**
- * Sleep function
- * @private
- * @param {Number} ms - Time in milliseconds
- * @returns {Promise}
- */
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+    .then(function (res) {
+      return res.json();
+    })
+    .catch(function (err) {
+      return Promise.reject(err);
+    });
 }
 //#endregion
 
-
 /**
  * Core of mozambique-api-wrapper
- * 
+ *
  * @constructor
  * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
  * @param {Number} [version=5] API version to use
  */
 class MozambiqueAPI {
   constructor(apiKey, version = 5) {
-    if (!apiKey) throw new Error("[ERROR] mozampique-api-wrapper: API Key missing");
+    if (!apiKey)
+      throw new Error("[ERROR] mozampique-api-wrapper: API Key missing");
 
     let self = this;
     self.apiKey = apiKey;
@@ -61,7 +52,7 @@ class MozambiqueAPI {
     self.headers = {
       "User-Agent": "mozambique-api-wrapper",
       "Content-Type": "application/json",
-      "Authorization": self.apiKey
+      Authorization: self.apiKey,
     };
   }
 
@@ -75,7 +66,13 @@ class MozambiqueAPI {
     let type;
     if (query.player) type = "player=" + query.player;
     if (query.uid) type = "uid=" + query.uid;
-    let url = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query.platform + "&" + type;
+    let url =
+      DIRECTORY.SEARCH_URL +
+      this.version +
+      "&platform=" +
+      query.platform +
+      "&" +
+      type;
     return request(this, url);
   }
 
@@ -106,11 +103,11 @@ class MozambiqueAPI {
    * @param {String} action - Action for the Match History API (info, get, delete, add)
    * @param {PlayerQuery} [query] - Query parameters
    * @param {Number} [limit] - Limit of events to get on action get
-   * @returns {Object} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info 
+   * @returns {Object} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
    */
   history(action, query, limit) {
-    let q = ''; 
-    if(action != "info") {
+    let q = "";
+    if (action != "info") {
       let type;
       if (query.player) type = "player=" + query.player;
       if (query.uid) type = "uid=" + query.uid;
@@ -118,58 +115,91 @@ class MozambiqueAPI {
     }
 
     let l = "";
-    if(!isNaN(limit)) l = "&limit=" + limit;
+    if (!isNaN(limit)) l = "&limit=" + limit;
 
     let url = DIRECTORY.MATCH_HISTORY + q + "history=1&action=" + action + l;
     return request(this, url);
   }
-  
+
   /**
    * Get the map rotation
    * @returns {MapRotationData}
    */
-   mapRotation() {
+  mapRotation() {
     let url = DIRECTORY.MAP_ROTATION;
     return request(this, url);
   }
 
   /**
+   * Search a Origin user
+   * @param {String} player - player name
+   * @param {Boolean} showAllHits - If true, show all possible hits for the given player name
+   * @returns
+   */
+  origin(player, showAllHits) {
+    let url =
+      DIRECTORY.ORIGIN +
+      "player=" +
+      player +
+      (showAllHits ? "&showAllHits" : "");
+    return request(this, url);
+  }
+
+  /**
    * Compare two players (WIP)
-   * 
+   *
    * @param {PlayerQuery} query1 - Query parameters
    * @param {PlayerQuery} query2 - Player query parameters
    * @returns {ComparedData}
    */
   async compare(query1, query2) {
-    if(!query1.platform || !query2.platform) throw new Error("[ERROR] mozampique-api-wrapper: Platform required");
+    if (!query1.platform || !query2.platform)
+      throw new Error("[ERROR] mozampique-api-wrapper: Platform required");
 
     /** @type {ComparedData} */
     var DataObj = {
       players: [],
       data: {
         trackers: [],
-        badges: []
-      }
+        badges: [],
+      },
     };
 
-    if(query1.platform == query2.platform) {
+    if (query1.platform == query2.platform) {
       let type;
       if (query1.player) type = `player=${query1.player},${query2.player}`;
       if (query1.uid) type = `uid=${query1.uid},${query2.uid}`;
-      let url = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query1.platform + "&" + type;
+      let url =
+        DIRECTORY.SEARCH_URL +
+        this.version +
+        "&platform=" +
+        query1.platform +
+        "&" +
+        type;
       DataObj.players = await request(this, url);
-
     } else {
       let type1;
       if (query1.player) type1 = "player=" + query1.player;
       if (query1.uid) type1 = "uid=" + query1.uid;
-      let url1 = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query1.platform + "&" + type1;
+      let url1 =
+        DIRECTORY.SEARCH_URL +
+        this.version +
+        "&platform=" +
+        query1.platform +
+        "&" +
+        type1;
       DataObj.players[0] = await request(this, url1);
 
       let type2;
       if (query2.player) type2 = "player=" + query2.player;
       if (query2.uid) type2 = "uid=" + query2.uid;
-      let url2 = DIRECTORY.SEARCH_URL + this.version + "&platform=" + query2.platform + "&" + type2;
+      let url2 =
+        DIRECTORY.SEARCH_URL +
+        this.version +
+        "&platform=" +
+        query2.platform +
+        "&" +
+        type2;
       DataObj.players[1] = await request(this, url2);
     }
 
@@ -190,7 +220,6 @@ class MozambiqueAPI {
 }
 
 module.exports = MozambiqueAPI;
-
 
 //#region JSDoc typedefs
 /**
@@ -234,7 +263,7 @@ module.exports = MozambiqueAPI;
  * @property {Number} global.battlepass.history.season6
  * @property {Number} global.battlepass.history.season7
  * @property {Number} global.battlepass.history.season8
- * 
+ *
  * @property {Object} realtime - realtime data
  * @property {String} realtime.lobbyState
  * @property {Number} realtime.isOnline
@@ -242,7 +271,7 @@ module.exports = MozambiqueAPI;
  * @property {Number} realtime.canJoin
  * @property {Number} realtime.partyFull
  * @property {String} realtime.selectedLegend
- * 
+ *
  * @property {Object} legends
  * @property {Legend} legends.selected - Current selected legend
  * @property {Object} legends.all - All legends
@@ -262,7 +291,7 @@ module.exports = MozambiqueAPI;
  * @property {Legend} legends.all.Rampart
  * @property {Legend} legends.all.Horizon
  * @property {Legend} legends.all.Fuse
- * 
+ *
  * @property {Object} mozambiquehere_internal - Internal API data
  * @property {Boolean} mozambiquehere_internal.isNewToDB
  * @property {String} mozambiquehere_internal.claimedBy
@@ -271,7 +300,7 @@ module.exports = MozambiqueAPI;
  * @property {Object} mozambiquehere_internal.rate_limit
  * @property {Number} mozambiquehere_internal.rate_limit.max_per_second
  * @property {String} mozambiquehere_internal.rate_limit.current_req
- * 
+ *
  * @property {Object} total - Total stats from all legends together
  * @property {Number} total.kd - Will always be -1 unless kills and games played trackers are found
  */
@@ -373,6 +402,7 @@ module.exports = MozambiqueAPI;
  * @property {Number} current.remainingSecs
  * @property {Number} current.remainingMins
  * @property {String} current.remainingTimer
+ *
  * @property {Object} next
  * @property {Number} next.start
  * @property {Number} next.end
