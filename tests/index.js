@@ -1,8 +1,9 @@
 const MozambiqueAPI = require("../index.js");
+require("dotenv").config();
 
-const TEST_TOKEN = "test token here";
+const TEST_TOKEN = process.env.TEST_TOKEN;
 
-if (TEST_TOKEN == "test token here") {
+if (["null", "undefined"].includes(typeof TEST_TOKEN)) {
   console.warn("Please provide an API token for testing");
   process.exit(0);
 }
@@ -10,11 +11,19 @@ if (TEST_TOKEN == "test token here") {
 var client = new MozambiqueAPI(TEST_TOKEN);
 var c = true;
 
+/**
+ * @param {Error} err 
+ * @param {String} method 
+ */
 function newError(err, method) {
   console.error(`\n${err.message} on method ${method}\n${err.stack}\n`);
   c = false;
 }
 
+/**
+ * @param {Number} ms 
+ * @returns {Promise<void>}
+ */
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -67,6 +76,28 @@ async function test() {
     });
 
   await sleep(2000);
+
+  client
+    .origin("KingBR", true)
+    .then((resp) => {
+      console.log("Origin: OK");
+    })
+    .catch((err) => {
+      console.log("Origin: ERROR");
+      newError(err, "origin");
+    });
+
+  await sleep(2000);
+
+  client
+    .mapRotation()
+    .then((resp) => {
+      console.log("Map Rotation: OK");
+    })
+    .catch((err) => {
+      console.log("Map Rotation: ERROR");
+      newError(err, "mapRotation");
+    })
 
   /*
   await client
