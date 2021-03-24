@@ -1,7 +1,7 @@
 const MozambiqueAPI = require("../index.js");
 require("dotenv").config();
 
-const TEST_TOKEN = process.env.TEST_TOKEN;
+const TEST_TOKEN = process.env.TEST_TOKEN || null;
 
 if (["null", "undefined"].includes(typeof TEST_TOKEN)) {
   console.warn("Please provide an API token for testing");
@@ -12,8 +12,8 @@ var client = new MozambiqueAPI(TEST_TOKEN);
 var c = true;
 
 /**
- * @param {Error} err 
- * @param {String} method 
+ * @param {Error} err
+ * @param {String} method
  */
 function newError(err, method) {
   console.error(`\n${err.message} on method ${method}\n${err.stack}\n`);
@@ -21,7 +21,7 @@ function newError(err, method) {
 }
 
 /**
- * @param {Number} ms 
+ * @param {Number} ms
  * @returns {Promise<void>}
  */
 function sleep(ms) {
@@ -97,7 +97,7 @@ async function test() {
     .catch((err) => {
       console.log("Map Rotation: ERROR");
       newError(err, "mapRotation");
-    })
+    });
 
   /*
   await client

@@ -37,11 +37,14 @@ function request(self, url) {
 /**
  * Core of mozambique-api-wrapper
  *
- * @constructor
- * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
- * @param {Number} [version=5] API version to use
+ * @class
  */
 class MozambiqueAPI {
+  /**
+   * @constructor
+   * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
+   * @param {Number} [version=5] API version to use
+   */
   constructor(apiKey, version = 5) {
     if (!apiKey)
       throw new Error("[ERROR] mozampique-api-wrapper: API Key missing");
@@ -150,7 +153,7 @@ class MozambiqueAPI {
    *
    * @param {PlayerQuery} query1 - Query parameters
    * @param {PlayerQuery} query2 - Player query parameters
-   * @returns {ComparedData}
+   * @returns {Promise<ComparedData>}
    */
   async compare(query1, query2) {
     if (!query1.platform || !query2.platform)
