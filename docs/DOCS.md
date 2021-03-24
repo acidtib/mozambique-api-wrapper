@@ -40,9 +40,14 @@
 <dd><p>Compared players data object</p>
 </dd>
 <dt><a href="#MapRotationData">MapRotationData</a> : <code>Object</code></dt>
-<dd></dd>
+<dd><p>Map rotation data</p>
+</dd>
 <dt><a href="#OriginData">OriginData</a> : <code>Object</code></dt>
-<dd></dd>
+<dd><p>Origin data</p>
+</dd>
+<dt><a href="#AnnouncementData">AnnouncementData</a> : <code>Object</code></dt>
+<dd><p>Announcement of <a href="https://apexlegendsstatus.com">apexlegendsstatus</a></p>
+</dd>
 </dl>
 
 <a name="MozambiqueAPI"></a>
@@ -62,6 +67,7 @@ Core of mozambique-api-wrapper
   - [.mapRotation()](#MozambiqueAPI+mapRotation) ⇒ [<code>MapRotationData</code>](#MapRotationData)
   - [.origin(player, [showAllHits])](#MozambiqueAPI+origin) ⇒ [<code>OriginData</code>](#OriginData) \| [<code>Array.&lt;OriginData&gt;</code>](#OriginData)
   - [.compare(query1, query2)](#MozambiqueAPI+compare) ⇒ [<code>Promise.&lt;ComparedData&gt;</code>](#ComparedData)
+  - [.announcements()](#MozambiqueAPI+announcements) ⇒ [<code>AnnouncementData</code>](#AnnouncementData)
   - ~~[.gamedata(dataType)](#MozambiqueAPI+gamedata) ⇒ <code>Object</code>~~
 
 <a name="new_MozambiqueAPI_new"></a>
@@ -155,6 +161,13 @@ Compare two players (WIP)
 | query1 | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters        |
 | query2 | [<code>PlayerQuery</code>](#PlayerQuery) | Player query parameters |
 
+<a name="MozambiqueAPI+announcements"></a>
+
+### mozambiqueAPI.announcements() ⇒ [<code>AnnouncementData</code>](#AnnouncementData)
+
+Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
+
+**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 <a name="MozambiqueAPI+gamedata"></a>
 
 ### ~~mozambiqueAPI.gamedata(dataType) ⇒ <code>Object</code>~~
@@ -408,6 +421,8 @@ Compared players data object
 
 ## MapRotationData : <code>Object</code>
 
+Map rotation data
+
 **Kind**: global typedef  
 **Properties**
 
@@ -437,6 +452,8 @@ Compared players data object
 
 ## OriginData : <code>Object</code>
 
+Origin data
+
 **Kind**: global typedef  
 **Properties**
 
@@ -446,3 +463,18 @@ Compared players data object
 | uid    | <code>String</code> |
 | pid    | <code>String</code> |
 | avatar | <code>String</code> |
+
+<a name="AnnouncementData"></a>
+
+## AnnouncementData : <code>Object</code>
+
+Announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
+
+**Kind**: global typedef  
+**Properties**
+
+| Name     | Type                |
+| -------- | ------------------- |
+| Release  | <code>Number</code> |
+| Content  | <code>String</code> |
+| Duration | <code>Number</code> |
