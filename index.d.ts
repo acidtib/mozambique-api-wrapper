@@ -1,7 +1,6 @@
 export = MozambiqueAPI;
 /**
  * Core of mozambique-api-wrapper
- *
  * @class
  */
 declare class MozambiqueAPI {
@@ -68,6 +67,11 @@ declare class MozambiqueAPI {
    */
   compare(query1: PlayerQuery, query2: PlayerQuery): Promise<ComparedData>;
   /**
+   * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
+   * @returns {AnnouncementData}
+   */
+  announcements(): AnnouncementData;
+  /**
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
    * @deprecated data not updated
@@ -90,6 +94,7 @@ declare namespace MozambiqueAPI {
     ComparedData,
     MapRotationData,
     OriginData,
+    AnnouncementData,
   };
 }
 /**
@@ -223,6 +228,9 @@ type ServersObj = {
   ApexOauth_Crossplay: RegionsObj;
   Mozambiquehere_StatsAPI: RegionsObj;
 };
+/**
+ * Map rotation data
+ */
 type MapRotationData = {
   current: {
     start: number;
@@ -246,6 +254,9 @@ type MapRotationData = {
     DurationInMinutes: number;
   };
 };
+/**
+ * Origin data
+ */
 type OriginData = {
   name: string;
   uid: string;
@@ -261,6 +272,14 @@ type ComparedData = {
     trackers: TrackerObj[];
     badges: BadgeObj[];
   };
+};
+/**
+ * Announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
+ */
+type AnnouncementData = {
+  Release: number;
+  Content: string;
+  Duration: number;
 };
 /**
  * Legend data object

@@ -10,6 +10,7 @@ const DIRECTORY = {
   GAME_DATA: BASE_URL + "/gamedata?",
   MAP_ROTATION: BASE_URL + "/maprotation?",
   ORIGIN: BASE_URL + "/origin?",
+  ANNOUNCEMENTS: "https://apexlegendsstatus.com/anno.json",
 };
 
 //#region Private functions
@@ -36,7 +37,6 @@ function request(self, url) {
 
 /**
  * Core of mozambique-api-wrapper
- *
  * @class
  */
 class MozambiqueAPI {
@@ -207,6 +207,14 @@ class MozambiqueAPI {
     }
 
     return DataObj;
+  }
+
+  /**
+   * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
+   * @returns {AnnouncementData}
+   */
+  announcements() {
+    return request(this, DIRECTORY.ANNOUNCEMENTS);
   }
 
   /**
@@ -393,6 +401,7 @@ module.exports = MozambiqueAPI;
  */
 
 /**
+ * Map rotation data
  * @typedef {Object} MapRotationData
  * @property {Object} current
  * @property {Number} current.start
@@ -417,10 +426,19 @@ module.exports = MozambiqueAPI;
  */
 
 /**
+ * Origin data
  * @typedef {Object} OriginData
  * @property {String} name
  * @property {String} uid
  * @property {String} pid
  * @property {String} avatar
+ */
+
+/**
+ * Announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
+ * @typedef {Object} AnnouncementData
+ * @property {Number} Release
+ * @property {String} Content
+ * @property {Number} Duration
  */
 //#endregion
