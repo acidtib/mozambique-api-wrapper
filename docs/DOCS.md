@@ -61,7 +61,7 @@ Core of mozambique-api-wrapper
   - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Object</code>
   - [.mapRotation()](#MozambiqueAPI+mapRotation) ⇒ [<code>MapRotationData</code>](#MapRotationData)
   - [.origin(player, [showAllHits])](#MozambiqueAPI+origin) ⇒ [<code>OriginData</code>](#OriginData) \| [<code>Array.&lt;OriginData&gt;</code>](#OriginData)
-  - [.compare(query1, query2)](#MozambiqueAPI+compare) ⇒ [<code>ComparedData</code>](#ComparedData)
+  - [.compare(query1, query2)](#MozambiqueAPI+compare) ⇒ [<code>Promise.&lt;ComparedData&gt;</code>](#ComparedData)
   - ~~[.gamedata(dataType)](#MozambiqueAPI+gamedata) ⇒ <code>Object</code>~~
 
 <a name="new_MozambiqueAPI_new"></a>
@@ -144,7 +144,7 @@ Search a Origin user
 
 <a name="MozambiqueAPI+compare"></a>
 
-### mozambiqueAPI.compare(query1, query2) ⇒ [<code>ComparedData</code>](#ComparedData)
+### mozambiqueAPI.compare(query1, query2) ⇒ [<code>Promise.&lt;ComparedData&gt;</code>](#ComparedData)
 
 Compare two players (WIP)
 
