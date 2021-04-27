@@ -87,6 +87,7 @@ declare namespace MozambiqueAPI {
     Legend,
     TrackerObj,
     BadgeObj,
+    LegendBadgeObj,
     ApexNews,
     ServersObj,
     RegionsObj,
@@ -152,6 +153,7 @@ type Player = {
         season8: number;
       };
     };
+    badges: BadgeObj[] | null;
   };
   /**
    * - realtime data
@@ -189,14 +191,13 @@ type Player = {
    * - Internal API data
    */
   mozambiquehere_internal: {
-    isNewToDB: boolean;
-    claimedBy: string;
     APIAccessType: string;
     ClusterID: string;
     rate_limit: {
       max_per_second: number;
       current_req: string;
     };
+    clusterSrv: string;
   };
   /**
    * - Total stats from all legends together
@@ -221,12 +222,16 @@ type ServersObj = {
   Origin_login: RegionsObj;
   EA_novafusion: RegionsObj;
   EA_accounts: RegionsObj;
-  ApexOauth_PC: RegionsObj;
-  ApexOauth_PS4: RegionsObj;
-  ApexOauth_X1: RegionsObj;
-  ApexOauth_Steam: RegionsObj;
   ApexOauth_Crossplay: RegionsObj;
-  Mozambiquehere_StatsAPI: RegionsObj;
+  selfCoreTest: {
+    "Status-website": RegionDataObj;
+    "Stats-API": RegionDataObj;
+    "Overflow-#1": RegionDataObj;
+    "Overflow-#2": RegionDataObj;
+    "Origin-API": RegionDataObj;
+    "Playstation-API": RegionDataObj;
+    "Xbox-API": RegionDataObj;
+  };
 };
 /**
  * Map rotation data
@@ -292,7 +297,7 @@ type Legend = {
     frame: string;
     pose: string;
     intro: string;
-    badges: BadgeObj[];
+    badges: LegendBadgeObj[];
   };
   ImgAssets: {
     icon: string;
@@ -313,6 +318,14 @@ type TrackerObj = {
 type BadgeObj = {
   name: string;
   value: string | number;
+};
+/**
+ * Legend Badge data object
+ */
+type LegendBadgeObj = {
+  name: string;
+  value: string | number;
+  category: string;
 };
 /**
  * Regions object

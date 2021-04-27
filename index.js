@@ -274,6 +274,7 @@ module.exports = MozambiqueAPI;
  * @property {Number} global.battlepass.history.season6
  * @property {Number} global.battlepass.history.season7
  * @property {Number} global.battlepass.history.season8
+ * @property {BadgeObj[]|null} global.badges
  *
  * @property {Object} realtime - realtime data
  * @property {String} realtime.lobbyState
@@ -304,13 +305,12 @@ module.exports = MozambiqueAPI;
  * @property {Legend} legends.all.Fuse
  *
  * @property {Object} mozambiquehere_internal - Internal API data
- * @property {Boolean} mozambiquehere_internal.isNewToDB
- * @property {String} mozambiquehere_internal.claimedBy
  * @property {String} mozambiquehere_internal.APIAccessType
  * @property {String} mozambiquehere_internal.ClusterID
  * @property {Object} mozambiquehere_internal.rate_limit
  * @property {Number} mozambiquehere_internal.rate_limit.max_per_second
  * @property {String} mozambiquehere_internal.rate_limit.current_req
+ * @property {String} mozambiquehere_internal.clusterSrv
  *
  * @property {Object} total - Total stats from all legends together
  * @property {Number} total.kd - Will always be -1 unless kills and games played trackers are found
@@ -326,7 +326,7 @@ module.exports = MozambiqueAPI;
  * @property {String} gameInfo.frame
  * @property {String} gameInfo.pose
  * @property {String} gameInfo.intro
- * @property {BadgeObj[]} gameInfo.badges
+ * @property {LegendBadgeObj[]} gameInfo.badges
  * @property {Object} ImgAssets
  * @property {String} ImgAssets.icon
  * @property {String} ImgAssets.banner
@@ -348,6 +348,14 @@ module.exports = MozambiqueAPI;
  */
 
 /**
+ * Legend Badge data object
+ * @typedef {Object} LegendBadgeObj
+ * @property {String} name
+ * @property {String|Number} value
+ * @property {String} category
+ */
+
+/**
  * Apex Legends News Object
  * @typedef {Object} ApexNews
  * @property {String} title
@@ -362,12 +370,15 @@ module.exports = MozambiqueAPI;
  * @property {RegionsObj} Origin_login
  * @property {RegionsObj} EA_novafusion
  * @property {RegionsObj} EA_accounts
- * @property {RegionsObj} ApexOauth_PC
- * @property {RegionsObj} ApexOauth_PS4
- * @property {RegionsObj} ApexOauth_X1
- * @property {RegionsObj} ApexOauth_Steam
  * @property {RegionsObj} ApexOauth_Crossplay
- * @property {RegionsObj} Mozambiquehere_StatsAPI
+ * @property {Object} selfCoreTest
+ * @property {RegionDataObj} selfCoreTest.Status-website
+ * @property {RegionDataObj} selfCoreTest.Stats-API
+ * @property {RegionDataObj} selfCoreTest.Overflow-#1
+ * @property {RegionDataObj} selfCoreTest.Overflow-#2
+ * @property {RegionDataObj} selfCoreTest.Origin-API
+ * @property {RegionDataObj} selfCoreTest.Playstation-API
+ * @property {RegionDataObj} selfCoreTest.Xbox-API
  */
 
 /**
