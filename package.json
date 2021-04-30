@@ -9,15 +9,9 @@
     "lint": "npx prettier -w .",
     "prepare": "npm run gendoc & npm run lint"
   },
-  "author": {
-    "name": "Dainel Vera",
-    "url": "https://github.com/arubinofaux"
-  },
+  "author": "Dainel Vera (https://github.com/arubinofaux)",
   "contributors": [
-    {
-      "name": "Fernando",
-      "url": "https://github.com/King-BR"
-    }
+    "Fernando (https://github.com/King-BR)"
   ],
   "directories": {
     "doc": "docs",
@@ -42,5 +36,13 @@
     "jsdoc-to-markdown": "^6.0.1",
     "prettier": "^2.2.1",
     "prettier-eslint": "^12.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arubinofaux/mozambique-api-wrapper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arubinofaux/mozambique-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/arubinofaux/mozambique-api-wrapper#readme"
 }
