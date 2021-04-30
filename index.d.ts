@@ -34,9 +34,9 @@ declare class MozambiqueAPI {
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {ServersObj} Object with status of all servers
+   * @returns {Servers} Object with status of all servers
    */
-  server(): ServersObj;
+  server(): Servers;
   /**
    * Avaliable for everyone but with limitations depending on your api access type
    *
@@ -68,9 +68,16 @@ declare class MozambiqueAPI {
   compare(query1: PlayerQuery, query2: PlayerQuery): Promise<ComparedData>;
   /**
    * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
-   * @returns {AnnouncementData}
+   * @returns {Announcement}
    */
-  announcements(): AnnouncementData;
+  announcements(): Announcement;
+  /**
+   * Get the UID using the player name
+   * @param {Object} query
+   * @param {String} query.player - player name
+   * @param {String} query.platform - player platform
+   */
+  nameToUID(query: { player: string; platform: string }): JSON | Promise<Error>;
   /**
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
@@ -85,17 +92,17 @@ declare namespace MozambiqueAPI {
     PlayerQuery,
     Player,
     Legend,
-    TrackerObj,
-    BadgeObj,
-    LegendBadgeObj,
+    Tracker,
+    Badge,
+    LegendBadge,
     ApexNews,
-    ServersObj,
-    RegionsObj,
-    RegionDataObj,
+    Servers,
+    Regions,
+    RegionData,
     ComparedData,
     MapRotationData,
     OriginData,
-    AnnouncementData,
+    Announcement,
   };
 }
 /**
@@ -153,7 +160,7 @@ type Player = {
         season8: number;
       };
     };
-    badges: BadgeObj[] | null;
+    badges: Badge[] | null;
   };
   /**
    * - realtime data
@@ -185,6 +192,7 @@ type Player = {
       Rampart: Legend;
       Horizon: Legend;
       Fuse: Legend;
+      Valkyrie: Legend;
     };
   };
   /**
@@ -218,19 +226,29 @@ type ApexNews = {
 /**
  * Servers status data object
  */
-type ServersObj = {
-  Origin_login: RegionsObj;
-  EA_novafusion: RegionsObj;
-  EA_accounts: RegionsObj;
-  ApexOauth_Crossplay: RegionsObj;
+type Servers = {
+  Origin_login: Regions;
+  EA_novafusion: Regions;
+  EA_accounts: Regions;
+  ApexOauth_Crossplay: Regions;
   selfCoreTest: {
-    "Status-website": RegionDataObj;
-    "Stats-API": RegionDataObj;
-    "Overflow-#1": RegionDataObj;
-    "Overflow-#2": RegionDataObj;
-    "Origin-API": RegionDataObj;
-    "Playstation-API": RegionDataObj;
-    "Xbox-API": RegionDataObj;
+    Status: RegionData;
+    Stats: RegionData;
+    "Overflow-#1": RegionData;
+    "Overflow-#2": RegionData;
+    "Origin-API": RegionData;
+    "Playstation-API": RegionData;
+    "Xbox-API": RegionData;
+  };
+  otherPlatforms: {
+    "Playstation-Network": {
+      Status: String;
+      QueryTimestamp: Number;
+    };
+    "Xbox-Live": {
+      Status: String;
+      QueryTimestamp: Number;
+    };
   };
 };
 /**
@@ -274,14 +292,14 @@ type OriginData = {
 type ComparedData = {
   players: Player[];
   data: {
-    trackers: TrackerObj[];
-    badges: BadgeObj[];
+    trackers: Tracker[];
+    badges: Badge[];
   };
 };
 /**
  * Announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
  */
-type AnnouncementData = {
+type Announcement = {
   Release: number;
   Content: string;
   Duration: number;
@@ -291,13 +309,13 @@ type AnnouncementData = {
  */
 type Legend = {
   LegendName: string;
-  data: TrackerObj[];
-  gameInfo: {
+  data?: Tracker[];
+  gameInfo?: {
     skin: string;
     frame: string;
     pose: string;
     intro: string;
-    badges: LegendBadgeObj[];
+    badges: LegendBadge[];
   };
   ImgAssets: {
     icon: string;
@@ -307,7 +325,7 @@ type Legend = {
 /**
  * Tracker data object
  */
-type TrackerObj = {
+type Tracker = {
   name: string;
   value: string | number;
   key: string;
@@ -315,14 +333,14 @@ type TrackerObj = {
 /**
  * Badge data object
  */
-type BadgeObj = {
+type Badge = {
   name: string;
   value: string | number;
 };
 /**
  * Legend Badge data object
  */
-type LegendBadgeObj = {
+type LegendBadge = {
   name: string;
   value: string | number;
   category: string;
@@ -330,19 +348,19 @@ type LegendBadgeObj = {
 /**
  * Regions object
  */
-type RegionsObj = {
-  "EU-West": RegionDataObj;
-  "EU-East": RegionDataObj;
-  "US-West": RegionDataObj;
-  "US-Central": RegionDataObj;
-  "US-East": RegionDataObj;
-  SouthAmerica: RegionDataObj;
-  Asia: RegionDataObj;
+type Regions = {
+  "EU-West": RegionData;
+  "EU-East": RegionData;
+  "US-West": RegionData;
+  "US-Central": RegionData;
+  "US-East": RegionData;
+  SouthAmerica: RegionData;
+  Asia: RegionData;
 };
 /**
  * Region data object
  */
-type RegionDataObj = {
+type RegionData = {
   Status: string;
   HTTPCode: number;
   ResponseTime: number;

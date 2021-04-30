@@ -84,4 +84,53 @@ mozambiqueClient
   .catch(function (e) {
     console.log(e);
   });
+
+// Get the map rotation
+mozambiqueClient
+  .mapRotation()
+  .then(function (result) {
+    console.log(result);
+  })
+  .catch(function (e) {
+    console.log(e);
+  });
+
+// Search a Origin user
+mozambiqueClient
+  .origin(
+    {
+      platform: "X1",
+      player: "acidtib",
+    },
+    false
+  )
+  .then(function (result) {
+    console.log(result);
+  })
+  .catch(function (e) {
+    console.log(e);
+  });
+
+// Get apexlegendsstatus.com announcements
+mozambiqueClient
+  .announcements()
+  .then(function (result) {
+    console.log(result);
+  })
+  .catch(function (e) {
+    console.log(e);
+  });
+
+// Get the UID using the player name
+mozambiqueClient
+  .nameToUID({
+    platform: "X1",
+    player: "acidtib",
+  })
+  .then(function (result) {
+    console.log(result);
+  })
+  .catch(function (e) {
+    console.log(e);
+  });
 ```

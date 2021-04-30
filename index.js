@@ -11,6 +11,7 @@ const DIRECTORY = {
   MAP_ROTATION: BASE_URL + "/maprotation?",
   ORIGIN: BASE_URL + "/origin?",
   ANNOUNCEMENTS: "https://apexlegendsstatus.com/anno.json",
+  NAME_TO_UID: "/nametouid?",
 };
 
 //#region Private functions
@@ -93,7 +94,7 @@ class MozambiqueAPI {
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {ServersObj} Object with status of all servers
+   * @returns {Servers} Object with status of all servers
    */
   server() {
     let url = DIRECTORY.SERVER_STATUS;
@@ -211,10 +212,26 @@ class MozambiqueAPI {
 
   /**
    * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
-   * @returns {AnnouncementData}
+   * @returns {Announcement}
    */
   announcements() {
     return request(this, DIRECTORY.ANNOUNCEMENTS);
+  }
+
+  /**
+   * Get the UID using the player name
+   * @param {Object} query
+   * @param {String} query.player - player name
+   * @param {String} query.platform - player platform
+   */
+  nameToUID(query) {
+    let url =
+      DIRECTORY.NAME_TO_UID +
+      "player=" +
+      query.player +
+      "&platform=" +
+      query.platform;
+    return request(this, url);
   }
 
   /**
@@ -274,7 +291,7 @@ module.exports = MozambiqueAPI;
  * @property {Number} global.battlepass.history.season6
  * @property {Number} global.battlepass.history.season7
  * @property {Number} global.battlepass.history.season8
- * @property {BadgeObj[]|null} global.badges
+ * @property {Badge[]|null} global.badges
  *
  * @property {Object} realtime - realtime data
  * @property {String} realtime.lobbyState
@@ -303,6 +320,7 @@ module.exports = MozambiqueAPI;
  * @property {Legend} legends.all.Rampart
  * @property {Legend} legends.all.Horizon
  * @property {Legend} legends.all.Fuse
+ * @property {Legend} legends.all.Valkyrie
  *
  * @property {Object} mozambiquehere_internal - Internal API data
  * @property {String} mozambiquehere_internal.APIAccessType
@@ -320,13 +338,13 @@ module.exports = MozambiqueAPI;
  * Legend data object
  * @typedef {Object} Legend
  * @property {String} LegendName
- * @property {TrackerObj[]} data
- * @property {Object} gameInfo
+ * @property {Tracker[]} [data]
+ * @property {Object} [gameInfo]
  * @property {String} gameInfo.skin
  * @property {String} gameInfo.frame
  * @property {String} gameInfo.pose
  * @property {String} gameInfo.intro
- * @property {LegendBadgeObj[]} gameInfo.badges
+ * @property {LegendBadge[]} gameInfo.badges
  * @property {Object} ImgAssets
  * @property {String} ImgAssets.icon
  * @property {String} ImgAssets.banner
@@ -334,7 +352,7 @@ module.exports = MozambiqueAPI;
 
 /**
  * Tracker data object
- * @typedef {Object} TrackerObj
+ * @typedef {Object} Tracker
  * @property {String} name
  * @property {String|Number} value
  * @property {String} key
@@ -342,14 +360,14 @@ module.exports = MozambiqueAPI;
 
 /**
  * Badge data object
- * @typedef {Object} BadgeObj
+ * @typedef {Object} Badge
  * @property {String} name
  * @property {String|Number} value
  */
 
 /**
  * Legend Badge data object
- * @typedef {Object} LegendBadgeObj
+ * @typedef {Object} LegendBadge
  * @property {String} name
  * @property {String|Number} value
  * @property {String} category
@@ -366,36 +384,43 @@ module.exports = MozambiqueAPI;
 
 /**
  * Servers status data object
- * @typedef {Object} ServersObj
- * @property {RegionsObj} Origin_login
- * @property {RegionsObj} EA_novafusion
- * @property {RegionsObj} EA_accounts
- * @property {RegionsObj} ApexOauth_Crossplay
+ * @typedef {Object} Servers
+ * @property {Regions} Origin_login
+ * @property {Regions} EA_novafusion
+ * @property {Regions} EA_accounts
+ * @property {Regions} ApexOauth_Crossplay
  * @property {Object} selfCoreTest
- * @property {RegionDataObj} selfCoreTest.Status-website
- * @property {RegionDataObj} selfCoreTest.Stats-API
- * @property {RegionDataObj} selfCoreTest.Overflow-#1
- * @property {RegionDataObj} selfCoreTest.Overflow-#2
- * @property {RegionDataObj} selfCoreTest.Origin-API
- * @property {RegionDataObj} selfCoreTest.Playstation-API
- * @property {RegionDataObj} selfCoreTest.Xbox-API
+ * @property {RegionData} selfCoreTest.Status-website
+ * @property {RegionData} selfCoreTest.Stats-API
+ * @property {RegionData} selfCoreTest.Overflow-#1
+ * @property {RegionData} selfCoreTest.Overflow-#2
+ * @property {RegionData} selfCoreTest.Origin-API
+ * @property {RegionData} selfCoreTest.Playstation-API
+ * @property {RegionData} selfCoreTest.Xbox-API
+ * @property {Object} otherPlatforms
+ * @property {Object} otherPlatforms.Playstation-Network
+ * @property {String} otherPlatforms.Playstation-Network.Status
+ * @property {Number} otherPlatforms.Playstation-Network.QueryTimestamp
+ * @property {Object} otherPlatforms.Xbox-Live
+ * @property {String} otherPlatforms.Xbox-Live.Status
+ * @property {Number} otherPlatforms.Xbox-Live.QueryTimestamp
  */
 
 /**
  * Regions object
- * @typedef {Object} RegionsObj
- * @property {RegionDataObj} EU-West
- * @property {RegionDataObj} EU-East
- * @property {RegionDataObj} US-West
- * @property {RegionDataObj} US-Central
- * @property {RegionDataObj} US-East
- * @property {RegionDataObj} SouthAmerica
- * @property {RegionDataObj} Asia
+ * @typedef {Object} Regions
+ * @property {RegionData} EU-West
+ * @property {RegionData} EU-East
+ * @property {RegionData} US-West
+ * @property {RegionData} US-Central
+ * @property {RegionData} US-East
+ * @property {RegionData} SouthAmerica
+ * @property {RegionData} Asia
  */
 
 /**
  * Region data object
- * @typedef {Object} RegionDataObj
+ * @typedef {Object} RegionData
  * @property {String} Status
  * @property {Number} HTTPCode
  * @property {Number} ResponseTime
@@ -407,8 +432,8 @@ module.exports = MozambiqueAPI;
  * @typedef {Object} ComparedData
  * @property {Player[]} players
  * @property {Object} data
- * @property {TrackerObj[]} data.trackers
- * @property {BadgeObj[]} data.badges
+ * @property {Tracker[]} data.trackers
+ * @property {Badge[]} data.badges
  */
 
 /**
@@ -447,7 +472,7 @@ module.exports = MozambiqueAPI;
 
 /**
  * Announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
- * @typedef {Object} AnnouncementData
+ * @typedef {Object} Announcement
  * @property {Number} Release
  * @property {String} Content
  * @property {Number} Duration
