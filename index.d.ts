@@ -21,43 +21,43 @@ declare class MozambiqueAPI {
    * Search a player using player name or UID
    *
    * @param {PlayerQuery} query - Query parameters
-   * @returns {Player} Object with player info
+   * @returns {Promise<Player>} Object with player info
    */
-  search(query: PlayerQuery): Player;
+  search(query: PlayerQuery): Promise<Player>;
   /**
    * Get recent news about Apex Legends
    *
    * @param {String} [lang="en-us"] Language of the news
-   * @returns {ApexNews[]} Array of Apex Legends news
+   * @returns {Promise<ApexNews[]>} Array of Apex Legends news
    */
-  news(lang?: string): ApexNews[];
+  news(lang?: string): Promise<ApexNews[]>;
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {Servers} Object with status of all servers
+   * @returns {Promise<Servers>} Object with status of all servers
    */
-  server(): Servers;
+  server(): Promise<Servers>;
   /**
    * Avaliable for everyone but with limitations depending on your api access type
    *
    * @param {String} action - Action for the Match History API (info, get, delete, add)
    * @param {PlayerQuery} [query] - Query parameters
    * @param {Number} [limit] - Limit of events to get on action get
-   * @returns {Object} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
+   * @returns {Promise<Object>} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
    */
-  history(action: string, query?: PlayerQuery, limit?: number): Object;
+  history(action: string, query?: PlayerQuery, limit?: number): Promise<Object>;
   /**
    * Get the map rotation
-   * @returns {MapRotationData}
+   * @returns {Promise<MapRotationData>}
    */
-  mapRotation(): MapRotationData;
+  mapRotation(): Promise<MapRotationData>;
   /**
    * Search a Origin user
    * @param {String} player - player name
    * @param {Boolean} [showAllHits=false] - If true, get all possible hits for the given player name and returns it in an array
-   * @returns {OriginData|OriginData[]}
+   * @returns {Promise<OriginData|OriginData[]>}
    */
-  origin(player: string, showAllHits?: boolean): OriginData | OriginData[];
+  origin(player: string, showAllHits?: boolean): Promise<OriginData | OriginData[]>;
   /**
    * Compare two players (WIP)
    *
@@ -68,16 +68,17 @@ declare class MozambiqueAPI {
   compare(query1: PlayerQuery, query2: PlayerQuery): Promise<ComparedData>;
   /**
    * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
-   * @returns {Announcement}
+   * @returns {Promise<Announcement>}
    */
-  announcements(): Announcement;
+  announcements(): Promise<Announcement>;
   /**
    * Get the UID using the player name
-   * @param {Object} query
+   * @param {PlayerQuery} query
    * @param {String} query.player - player name
    * @param {String} query.platform - player platform
+   * @returns {Promise<NameToUIDData|OriginData>}
    */
-  nameToUID(query: { player: string; platform: string }): JSON | Promise<Error>;
+  nameToUID(query: PlayerQuery): Promise<NameToUIDData | OriginData>;
   /**
    * Avaliable data types:
    * assault_rifles, attachments, consumables, equipment, grenades, legends, light_machine_guns, pistols, shotguns, sniper_rifles, sub_machine_guns
@@ -103,6 +104,7 @@ declare namespace MozambiqueAPI {
     MapRotationData,
     OriginData,
     Announcement,
+    NameToUIDData,
   };
 }
 /**
@@ -357,8 +359,8 @@ type Regions = {
   "US-West": RegionData;
   "US-Central": RegionData;
   "US-East": RegionData;
-  SouthAmerica: RegionData;
-  Asia: RegionData;
+  "SouthAmerica": RegionData;
+  "Asia": RegionData;
 };
 /**
  * Region data object
@@ -368,4 +370,10 @@ type RegionData = {
   HTTPCode: number;
   ResponseTime: number;
   QueryTimestamp: number;
+};
+/**
+ * UID object
+ */
+type NameToUIDData = {
+  result: number;
 };
