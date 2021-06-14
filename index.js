@@ -11,7 +11,7 @@ const DIRECTORY = {
   MAP_ROTATION: BASE_URL + "/maprotation?",
   ORIGIN: BASE_URL + "/origin?",
   ANNOUNCEMENTS: "https://apexlegendsstatus.com/anno.json",
-  NAME_TO_UID: "/nametouid?",
+  NAME_TO_UID: BASE_URL + "/nametouid?",
 };
 
 //#region Private functions
@@ -64,7 +64,7 @@ class MozambiqueAPI {
    * Search a player using player name or UID
    *
    * @param {PlayerQuery} query - Query parameters
-   * @returns {Player} Object with player info
+   * @returns {Promise<Player>} Object with player info
    */
   search(query) {
     let type;
@@ -84,7 +84,7 @@ class MozambiqueAPI {
    * Get recent news about Apex Legends
    *
    * @param {String} [lang="en-us"] Language of the news
-   * @returns {ApexNews[]} Array of Apex Legends news
+   * @returns {Promise<ApexNews[]>} Array of Apex Legends news
    */
   news(lang = "en-us") {
     let url = DIRECTORY.NEWS_URL + "lang=" + lang;
@@ -94,7 +94,7 @@ class MozambiqueAPI {
   /**
    * Get server status for Origin, EA, Apex Legends and apexlegendsapi API
    *
-   * @returns {Servers} Object with status of all servers
+   * @returns {Promise<Servers>} Object with status of all servers
    */
   server() {
     let url = DIRECTORY.SERVER_STATUS;
@@ -107,7 +107,7 @@ class MozambiqueAPI {
    * @param {String} action - Action for the Match History API (info, get, delete, add)
    * @param {PlayerQuery} [query] - Query parameters
    * @param {Number} [limit] - Limit of events to get on action get
-   * @returns {Object} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
+   * @returns {Promise<Object>} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
    */
   history(action, query, limit) {
     let q = "";
@@ -127,7 +127,7 @@ class MozambiqueAPI {
 
   /**
    * Get the map rotation
-   * @returns {MapRotationData}
+   * @returns {Promise<MapRotationData>}
    */
   mapRotation() {
     let url = DIRECTORY.MAP_ROTATION;
@@ -138,7 +138,7 @@ class MozambiqueAPI {
    * Search a Origin user
    * @param {String} player - player name
    * @param {Boolean} [showAllHits=false] - If true, get all possible hits for the given player name and returns it in an array
-   * @returns {OriginData|OriginData[]}
+   * @returns {Promise<OriginData|OriginData[]>}
    */
   origin(player, showAllHits = false) {
     let url =
@@ -212,7 +212,7 @@ class MozambiqueAPI {
 
   /**
    * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
-   * @returns {Announcement}
+   * @returns {Promise<Announcement>}
    */
   announcements() {
     return request(this, DIRECTORY.ANNOUNCEMENTS);
@@ -220,9 +220,10 @@ class MozambiqueAPI {
 
   /**
    * Get the UID using the player name
-   * @param {Object} query
+   * @param {PlayerQuery} query
    * @param {String} query.player - player name
    * @param {String} query.platform - player platform
+   * @returns {Promise<NameToUIDData|OriginData>} JSON Object with uid or {@link OriginData}
    */
   nameToUID(query) {
     let url =
@@ -256,6 +257,12 @@ module.exports = MozambiqueAPI;
  * @property {String} [player] - Player in-game name, obligatory if uid is not specified
  * @property {String|Number} [uid] - Player UID, obligatory if player name is not specified
  * @property {String} platform - Player platform
+ */
+
+/**
+ * NameToUID data
+ * @typedef {Object} NameToUIDData
+ * @property {Number} [result] - The uid of the provided player
  */
 
 /**
