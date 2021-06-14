@@ -211,7 +211,10 @@ type Player = {
    * - Total stats from all legends together
    */
   total: {
-    kd: number;
+    kd: {
+      value: number;
+      name: string
+    };
   };
 };
 /**
