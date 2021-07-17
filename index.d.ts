@@ -57,7 +57,10 @@ declare class MozambiqueAPI {
    * @param {Boolean} [showAllHits=false] - If true, get all possible hits for the given player name and returns it in an array
    * @returns {Promise<OriginData|OriginData[]>}
    */
-  origin(player: string, showAllHits?: boolean): Promise<OriginData | OriginData[]>;
+  origin(
+    player: string,
+    showAllHits?: boolean
+  ): Promise<OriginData | OriginData[]>;
   /**
    * Compare two players (WIP)
    *
@@ -215,7 +218,7 @@ type Player = {
   total: {
     kd: {
       value: number;
-      name: string
+      name: string;
     };
   };
 };
@@ -257,9 +260,9 @@ type Servers = {
   };
 };
 /**
- * Map rotation data
+ * Map data
  */
-type MapRotationData = {
+type MapData = {
   current: {
     start: number;
     end: number;
@@ -283,6 +286,17 @@ type MapRotationData = {
   };
 };
 /**
+ * Map rotation data
+ */
+type MapRotationData = {
+  battle_royale: MapData;
+  arenas: MapData;
+  /**
+   * - May be incomplete
+   */
+  ranked: MapData;
+};
+/**
  * Origin data
  */
 type OriginData = {
@@ -290,16 +304,6 @@ type OriginData = {
   uid: string;
   pid: string;
   avatar: string;
-};
-/**
- * Compared players data object
- */
-type ComparedData = {
-  players: Player[];
-  data: {
-    trackers: Tracker[];
-    badges: Badge[];
-  };
 };
 /**
  * Announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
@@ -359,8 +363,8 @@ type Regions = {
   "US-West": RegionData;
   "US-Central": RegionData;
   "US-East": RegionData;
-  "SouthAmerica": RegionData;
-  "Asia": RegionData;
+  SouthAmerica: RegionData;
+  Asia: RegionData;
 };
 /**
  * Region data object

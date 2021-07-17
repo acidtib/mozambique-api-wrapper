@@ -12,6 +12,9 @@
 <dt><a href="#PlayerQuery">PlayerQuery</a> : <code>Object</code></dt>
 <dd><p>Player query</p>
 </dd>
+<dt><a href="#NameToUIDData">NameToUIDData</a> : <code>Object</code></dt>
+<dd><p>NameToUID data</p>
+</dd>
 <dt><a href="#Player">Player</a> : <code>Object</code></dt>
 <dd><p>Player data object</p>
 </dd>
@@ -39,8 +42,8 @@
 <dt><a href="#RegionData">RegionData</a> : <code>Object</code></dt>
 <dd><p>Region data object</p>
 </dd>
-<dt><a href="#ComparedData">ComparedData</a> : <code>Object</code></dt>
-<dd><p>Compared players data object</p>
+<dt><a href="#MapData">MapData</a> : <code>Object</code></dt>
+<dd><p>Map data</p>
 </dd>
 <dt><a href="#MapRotationData">MapRotationData</a> : <code>Object</code></dt>
 <dd><p>Map rotation data</p>
@@ -63,15 +66,14 @@ Core of mozambique-api-wrapper
 
 - [MozambiqueAPI](#MozambiqueAPI)
   - [new MozambiqueAPI(apiKey, [version])](#new_MozambiqueAPI_new)
-  - [.search(query)](#MozambiqueAPI+search) ⇒ [<code>Player</code>](#Player)
-  - [.news([lang])](#MozambiqueAPI+news) ⇒ [<code>Array.&lt;ApexNews&gt;</code>](#ApexNews)
-  - [.server()](#MozambiqueAPI+server) ⇒ [<code>Servers</code>](#Servers)
-  - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Object</code>
-  - [.mapRotation()](#MozambiqueAPI+mapRotation) ⇒ [<code>MapRotationData</code>](#MapRotationData)
-  - [.origin(player, [showAllHits])](#MozambiqueAPI+origin) ⇒ [<code>OriginData</code>](#OriginData) \| [<code>Array.&lt;OriginData&gt;</code>](#OriginData)
-  - [.compare(query1, query2)](#MozambiqueAPI+compare) ⇒ [<code>Promise.&lt;ComparedData&gt;</code>](#ComparedData)
-  - [.announcements()](#MozambiqueAPI+announcements) ⇒ [<code>Announcement</code>](#Announcement)
-  - [.nameToUID(query)](#MozambiqueAPI+nameToUID)
+  - [.search(query)](#MozambiqueAPI+search) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
+  - [.news([lang])](#MozambiqueAPI+news) ⇒ <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code>
+  - [.server()](#MozambiqueAPI+server) ⇒ [<code>Promise.&lt;Servers&gt;</code>](#Servers)
+  - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Promise.&lt;Object&gt;</code>
+  - [.mapRotation()](#MozambiqueAPI+mapRotation) ⇒ [<code>Promise.&lt;MapRotationData&gt;</code>](#MapRotationData)
+  - [.origin(player, [showAllHits])](#MozambiqueAPI+origin) ⇒ <code>Promise.&lt;(OriginData\|Array.&lt;OriginData&gt;)&gt;</code>
+  - [.announcements()](#MozambiqueAPI+announcements) ⇒ [<code>Promise.&lt;Announcement&gt;</code>](#Announcement)
+  - [.nameToUID(query)](#MozambiqueAPI+nameToUID) ⇒ <code>Promise.&lt;(NameToUIDData\|OriginData)&gt;</code>
   - ~~[.gamedata(dataType)](#MozambiqueAPI+gamedata) ⇒ <code>Object</code>~~
 
 <a name="new_MozambiqueAPI_new"></a>
@@ -85,12 +87,12 @@ Core of mozambique-api-wrapper
 
 <a name="MozambiqueAPI+search"></a>
 
-### mozambiqueAPI.search(query) ⇒ [<code>Player</code>](#Player)
+### mozambiqueAPI.search(query) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
 
 Search a player using player name or UID
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
-**Returns**: [<code>Player</code>](#Player) - Object with player info
+**Returns**: [<code>Promise.&lt;Player&gt;</code>](#Player) - Object with player info
 
 | Param | Type                                     | Description      |
 | ----- | ---------------------------------------- | ---------------- |
@@ -98,12 +100,12 @@ Search a player using player name or UID
 
 <a name="MozambiqueAPI+news"></a>
 
-### mozambiqueAPI.news([lang]) ⇒ [<code>Array.&lt;ApexNews&gt;</code>](#ApexNews)
+### mozambiqueAPI.news([lang]) ⇒ <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code>
 
 Get recent news about Apex Legends
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
-**Returns**: [<code>Array.&lt;ApexNews&gt;</code>](#ApexNews) - Array of Apex Legends news
+**Returns**: <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code> - Array of Apex Legends news
 
 | Param  | Type                | Default                        | Description          |
 | ------ | ------------------- | ------------------------------ | -------------------- |
@@ -111,20 +113,20 @@ Get recent news about Apex Legends
 
 <a name="MozambiqueAPI+server"></a>
 
-### mozambiqueAPI.server() ⇒ [<code>Servers</code>](#Servers)
+### mozambiqueAPI.server() ⇒ [<code>Promise.&lt;Servers&gt;</code>](#Servers)
 
 Get server status for Origin, EA, Apex Legends and apexlegendsapi API
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
-**Returns**: [<code>Servers</code>](#Servers) - Object with status of all servers  
+**Returns**: [<code>Promise.&lt;Servers&gt;</code>](#Servers) - Object with status of all servers  
 <a name="MozambiqueAPI+history"></a>
 
-### mozambiqueAPI.history(action, [query], [limit]) ⇒ <code>Object</code>
+### mozambiqueAPI.history(action, [query], [limit]) ⇒ <code>Promise.&lt;Object&gt;</code>
 
 Avaliable for everyone but with limitations depending on your api access type
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
-**Returns**: <code>Object</code> - Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
+**Returns**: <code>Promise.&lt;Object&gt;</code> - Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
 
 | Param   | Type                                     | Description                                               |
 | ------- | ---------------------------------------- | --------------------------------------------------------- |
@@ -134,14 +136,14 @@ Avaliable for everyone but with limitations depending on your api access type
 
 <a name="MozambiqueAPI+mapRotation"></a>
 
-### mozambiqueAPI.mapRotation() ⇒ [<code>MapRotationData</code>](#MapRotationData)
+### mozambiqueAPI.mapRotation() ⇒ [<code>Promise.&lt;MapRotationData&gt;</code>](#MapRotationData)
 
 Get the map rotation
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 <a name="MozambiqueAPI+origin"></a>
 
-### mozambiqueAPI.origin(player, [showAllHits]) ⇒ [<code>OriginData</code>](#OriginData) \| [<code>Array.&lt;OriginData&gt;</code>](#OriginData)
+### mozambiqueAPI.origin(player, [showAllHits]) ⇒ <code>Promise.&lt;(OriginData\|Array.&lt;OriginData&gt;)&gt;</code>
 
 Search a Origin user
 
@@ -152,39 +154,27 @@ Search a Origin user
 | player        | <code>String</code>  |                    | player name                                                                         |
 | [showAllHits] | <code>Boolean</code> | <code>false</code> | If true, get all possible hits for the given player name and returns it in an array |
 
-<a name="MozambiqueAPI+compare"></a>
-
-### mozambiqueAPI.compare(query1, query2) ⇒ [<code>Promise.&lt;ComparedData&gt;</code>](#ComparedData)
-
-Compare two players (WIP)
-
-**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)
-
-| Param  | Type                                     | Description             |
-| ------ | ---------------------------------------- | ----------------------- |
-| query1 | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters        |
-| query2 | [<code>PlayerQuery</code>](#PlayerQuery) | Player query parameters |
-
 <a name="MozambiqueAPI+announcements"></a>
 
-### mozambiqueAPI.announcements() ⇒ [<code>Announcement</code>](#Announcement)
+### mozambiqueAPI.announcements() ⇒ [<code>Promise.&lt;Announcement&gt;</code>](#Announcement)
 
 Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 <a name="MozambiqueAPI+nameToUID"></a>
 
-### mozambiqueAPI.nameToUID(query)
+### mozambiqueAPI.nameToUID(query) ⇒ <code>Promise.&lt;(NameToUIDData\|OriginData)&gt;</code>
 
 Get the UID using the player name
 
-**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)
+**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
+**Returns**: <code>Promise.&lt;(NameToUIDData\|OriginData)&gt;</code> - JSON Object with uid or [OriginData](#OriginData)
 
-| Param          | Type                | Description     |
-| -------------- | ------------------- | --------------- |
-| query          | <code>Object</code> |                 |
-| query.player   | <code>String</code> | player name     |
-| query.platform | <code>String</code> | player platform |
+| Param          | Type                                     | Description     |
+| -------------- | ---------------------------------------- | --------------- |
+| query          | [<code>PlayerQuery</code>](#PlayerQuery) |                 |
+| query.player   | <code>String</code>                      | player name     |
+| query.platform | <code>String</code>                      | player platform |
 
 <a name="MozambiqueAPI+gamedata"></a>
 
@@ -216,6 +206,19 @@ Player query
 | [player] | <code>String</code>                        | Player in-game name, obligatory if uid is not specified |
 | [uid]    | <code>String</code> \| <code>Number</code> | Player UID, obligatory if player name is not specified  |
 | platform | <code>String</code>                        | Player platform                                         |
+
+<a name="NameToUIDData"></a>
+
+## NameToUIDData : <code>Object</code>
+
+NameToUID data
+
+**Kind**: global typedef  
+**Properties**
+
+| Name     | Type                | Description                    |
+| -------- | ------------------- | ------------------------------ |
+| [result] | <code>Number</code> | The uid of the provided player |
 
 <a name="Player"></a>
 
@@ -445,27 +448,11 @@ Region data object
 | ResponseTime   | <code>Number</code> |
 | QueryTimestamp | <code>Number</code> |
 
-<a name="ComparedData"></a>
+<a name="MapData"></a>
 
-## ComparedData : <code>Object</code>
+## MapData : <code>Object</code>
 
-Compared players data object
-
-**Kind**: global typedef  
-**Properties**
-
-| Name          | Type                                           |
-| ------------- | ---------------------------------------------- |
-| players       | [<code>Array.&lt;Player&gt;</code>](#Player)   |
-| data          | <code>Object</code>                            |
-| data.trackers | [<code>Array.&lt;Tracker&gt;</code>](#Tracker) |
-| data.badges   | [<code>Array.&lt;Badge&gt;</code>](#Badge)     |
-
-<a name="MapRotationData"></a>
-
-## MapRotationData : <code>Object</code>
-
-Map rotation data
+Map data
 
 **Kind**: global typedef  
 **Properties**
@@ -491,6 +478,21 @@ Map rotation data
 | next.map                   | <code>String</code> |
 | next.DurationInSecs        | <code>Number</code> |
 | next.DurationInMinutes     | <code>Number</code> |
+
+<a name="MapRotationData"></a>
+
+## MapRotationData : <code>Object</code>
+
+Map rotation data
+
+**Kind**: global typedef  
+**Properties**
+
+| Name          | Type                             | Description       |
+| ------------- | -------------------------------- | ----------------- |
+| battle_royale | [<code>MapData</code>](#MapData) |                   |
+| arenas        | [<code>MapData</code>](#MapData) |                   |
+| ranked        | [<code>MapData</code>](#MapData) | May be incomplete |
 
 <a name="OriginData"></a>
 

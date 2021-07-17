@@ -150,67 +150,6 @@ class MozambiqueAPI {
   }
 
   /**
-   * Compare two players (WIP)
-   *
-   * @param {PlayerQuery} query1 - Query parameters
-   * @param {PlayerQuery} query2 - Player query parameters
-   * @returns {Promise<ComparedData>}
-   */
-  async compare(query1, query2) {
-    if (!query1.platform || !query2.platform)
-      throw new Error("[ERROR] mozampique-api-wrapper: Platform required");
-
-    /** @type {ComparedData} */
-    var DataObj = {
-      players: [],
-      data: {
-        trackers: [],
-        badges: [],
-      },
-    };
-
-    if (query1.platform == query2.platform) {
-      let type;
-      if (query1.player) type = `player=${query1.player},${query2.player}`;
-      if (query1.uid) type = `uid=${query1.uid},${query2.uid}`;
-      let url =
-        DIRECTORY.SEARCH_URL +
-        this.version +
-        "&platform=" +
-        query1.platform +
-        "&" +
-        type;
-      DataObj.players = await request(this, url);
-    } else {
-      let type1;
-      if (query1.player) type1 = "player=" + query1.player;
-      if (query1.uid) type1 = "uid=" + query1.uid;
-      let url1 =
-        DIRECTORY.SEARCH_URL +
-        this.version +
-        "&platform=" +
-        query1.platform +
-        "&" +
-        type1;
-      DataObj.players[0] = await request(this, url1);
-
-      let type2;
-      if (query2.player) type2 = "player=" + query2.player;
-      if (query2.uid) type2 = "uid=" + query2.uid;
-      let url2 =
-        DIRECTORY.SEARCH_URL +
-        this.version +
-        "&platform=" +
-        query2.platform +
-        "&" +
-        type2;
-      DataObj.players[1] = await request(this, url2);
-    }
-
-    return DataObj;
-  }
-
-  /**
    * Get the latest announcement of [apexlegendsstatus](https://apexlegendsstatus.com)
    * @returns {Promise<Announcement>}
    */
@@ -435,17 +374,8 @@ module.exports = MozambiqueAPI;
  */
 
 /**
- * Compared players data object
- * @typedef {Object} ComparedData
- * @property {Player[]} players
- * @property {Object} data
- * @property {Tracker[]} data.trackers
- * @property {Badge[]} data.badges
- */
-
-/**
- * Map rotation data
- * @typedef {Object} MapRotationData
+ * Map data
+ * @typedef {Object} MapData
  * @property {Object} current
  * @property {Number} current.start
  * @property {Number} current.end
@@ -466,6 +396,14 @@ module.exports = MozambiqueAPI;
  * @property {String} next.map
  * @property {Number} next.DurationInSecs
  * @property {Number} next.DurationInMinutes
+ */
+
+/**
+ * Map rotation data
+ * @typedef {Object} MapRotationData
+ * @property {MapData} battle_royale
+ * @property {MapData} arenas
+ * @property {MapData} ranked - May be incomplete
  */
 
 /**
