@@ -66,7 +66,7 @@ Core of mozambique-api-wrapper
 
 - [MozambiqueAPI](#MozambiqueAPI)
   - [new MozambiqueAPI(apiKey, [version])](#new_MozambiqueAPI_new)
-  - [.search(query, options)](#MozambiqueAPI+search) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
+  - [.search(query, [options])](#MozambiqueAPI+search) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
   - [.news([lang])](#MozambiqueAPI+news) ⇒ <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code>
   - [.server()](#MozambiqueAPI+server) ⇒ [<code>Promise.&lt;Servers&gt;</code>](#Servers)
   - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -87,7 +87,7 @@ Core of mozambique-api-wrapper
 
 <a name="MozambiqueAPI+search"></a>
 
-### mozambiqueAPI.search(query, options) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
+### mozambiqueAPI.search(query, [options]) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
 
 Search a player using player name or UID
 
@@ -97,7 +97,7 @@ Search a player using player name or UID
 | Param                  | Type                                     | Default            | Description      |
 | ---------------------- | ---------------------------------------- | ------------------ | ---------------- |
 | query                  | [<code>PlayerQuery</code>](#PlayerQuery) |                    | Query parameters |
-| options                | <code>object</code>                      |                    |                  |
+| [options]              | <code>object</code>                      |                    |                  |
 | [options.merge]        | <code>Boolean</code>                     | <code>false</code> |                  |
 | [options.removeMerged] | <code>Boolean</code>                     | <code>false</code> |                  |
 

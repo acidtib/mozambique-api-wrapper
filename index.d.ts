@@ -26,7 +26,10 @@ declare class MozambiqueAPI {
    * @param {Boolean} [options.removeMerged=false]
    * @returns {Promise<Player>} Object with player info
    */
-  search(query: PlayerQuery, options: { merge: Boolean, removeMerged: Boolean }): Promise<Player>;
+  search(
+    query: PlayerQuery,
+    options: { merge: Boolean; removeMerged: Boolean }
+  ): Promise<Player>;
   /**
    * Get recent news about Apex Legends
    *
