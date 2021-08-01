@@ -45,8 +45,9 @@ class MozambiqueAPI {
    * @constructor
    * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
    * @param {Number} [version=5] API version to use
+   * @param {String} [userAgent="mozambique-api-wrapper"] User-Agent header
    */
-  constructor(apiKey, version = 5) {
+  constructor(apiKey, version = 5, userAgent = "mozambique-api-wrapper") {
     if (!apiKey)
       throw new Error("[ERROR] mozampique-api-wrapper: API Key missing");
 
@@ -54,7 +55,7 @@ class MozambiqueAPI {
     self.apiKey = apiKey;
     self.version = version;
     self.headers = {
-      "User-Agent": "mozambique-api-wrapper",
+      "User-Agent": userAgent,
       "Content-Type": "application/json",
       Authorization: self.apiKey,
     };
@@ -73,6 +74,32 @@ class MozambiqueAPI {
     let type;
     if (query.player) type = "player=" + query.player;
     if (query.uid) type = "uid=" + query.uid;
+    let url =
+      DIRECTORY.SEARCH_URL +
+      this.version +
+      "&platform=" +
+      query.platform +
+      "&" +
+      type +
+      (options.merge ? "&merge" : "") +
+      (options.removeMerged ? "&removeMerged" : "");
+    return request(this, url);
+  }
+
+  /**
+   *
+   * @param {BulkPlayerQuery} bulkQuery
+   * @param {object} [options]
+   * @param {Boolean} [options.merge=false]
+   * @param {Boolean} [options.removeMerged=false]
+   * @returns {Promise<Player[]>}
+   */
+  bulkSearch(bulkQuery, options = { merge: false, removeMerged: false }) {
+    let type;
+    if (bulkQuery.players && bulkQuery.players.length > 0)
+      type = "player=" + bulkQuery.players.map((p) => p).join(",");
+    if (bulkQuery.uids && bulkQuery.uids.length > 0)
+      type = "uid=" + bulkQuery.uids.map((u) => u).join(",");
     let url =
       DIRECTORY.SEARCH_URL +
       this.version +
@@ -204,9 +231,17 @@ module.exports = MozambiqueAPI;
  */
 
 /**
+ * Bulk player query
+ * @typedef {Object} BulkPlayerQuery
+ * @property {String[]} [players] - Players in-game name, obligatory if uid is not specified
+ * @property {String[]|Number[]} [uids] - Players UID, obligatory if player name is not specified
+ * @property {String} platform - Players platform, has to be the same for every player in the bulk search
+ */
+
+/**
  * NameToUID data
  * @typedef {Object} NameToUIDData
- * @property {Number} [result] - The uid of the provided player
+ * @property {String|Number} result - The uid of the provided player
  */
 
 /**

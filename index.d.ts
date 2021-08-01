@@ -8,8 +8,9 @@ declare class MozambiqueAPI {
    * @constructor
    * @param {String} apiKey Your [Apex Legends API](https://apexlegendsapi.com) Auth Key
    * @param {Number} [version=5] API version to use
+   * @param {String} [userAgent="mozambique-api-wrapper"] User-Agent header
    */
-  constructor(apiKey: string, version?: number);
+  constructor(apiKey: string, version?: number, userAgent?: string);
   apiKey: string;
   version: number;
   headers: {
@@ -30,6 +31,19 @@ declare class MozambiqueAPI {
     query: PlayerQuery,
     options: { merge: Boolean; removeMerged: Boolean }
   ): Promise<Player>;
+  /**
+   * Bulk search players using player names or UIDs
+   *
+   * @param {BulkPlayerQuery} bulkQuery - Bulk query parameters
+   * @param {object} [options]
+   * @param {Boolean} [options.merge=false]
+   * @param {Boolean} [options.removeMerged=false]
+   * @returns {Promise<Player[]>} Object with players info
+   */
+  bulkSearch(
+    bulkQuery: BulkPlayerQuery,
+    options: { merge: Boolean; removeMerged: Boolean }
+  ): Promise<Player[]>;
   /**
    * Get recent news about Apex Legends
    *
@@ -130,6 +144,23 @@ type PlayerQuery = {
   uid?: string | number;
   /**
    * - Player platform
+   */
+  platform: string;
+};
+/**
+ * Bulk player query
+ */
+type BulkPlayerQuery = {
+  /**
+   * - Players in-game name, obligatory if uid is not specified
+   */
+  players?: string[];
+  /**
+   * - Players UID, obligatory if player name is not specified
+   */
+  uids?: string[] | number[];
+  /**
+   * - Players platform, has to be the same for every player in the bulk search
    */
   platform: string;
 };
@@ -398,7 +429,7 @@ type RegionData = {
   QueryTimestamp: number;
 };
 /**
- * UID object
+ * NameToUID data
  */
 type NameToUIDData = {
   result: number;

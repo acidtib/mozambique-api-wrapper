@@ -12,6 +12,9 @@
 <dt><a href="#PlayerQuery">PlayerQuery</a> : <code>Object</code></dt>
 <dd><p>Player query</p>
 </dd>
+<dt><a href="#BulkPlayerQuery">BulkPlayerQuery</a> : <code>Object</code></dt>
+<dd><p>Bulk player query</p>
+</dd>
 <dt><a href="#NameToUIDData">NameToUIDData</a> : <code>Object</code></dt>
 <dd><p>NameToUID data</p>
 </dd>
@@ -65,8 +68,9 @@ Core of mozambique-api-wrapper
 **Kind**: global class
 
 - [MozambiqueAPI](#MozambiqueAPI)
-  - [new MozambiqueAPI(apiKey, [version])](#new_MozambiqueAPI_new)
+  - [new MozambiqueAPI(apiKey, [version], [userAgent])](#new_MozambiqueAPI_new)
   - [.search(query, [options])](#MozambiqueAPI+search) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
+  - [.bulkSearch(bulkQuery, [options])](#MozambiqueAPI+bulkSearch) ⇒ <code>Promise.&lt;Array.&lt;Player&gt;&gt;</code>
   - [.news([lang])](#MozambiqueAPI+news) ⇒ <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code>
   - [.server()](#MozambiqueAPI+server) ⇒ [<code>Promise.&lt;Servers&gt;</code>](#Servers)
   - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -78,12 +82,13 @@ Core of mozambique-api-wrapper
 
 <a name="new_MozambiqueAPI_new"></a>
 
-### new MozambiqueAPI(apiKey, [version])
+### new MozambiqueAPI(apiKey, [version], [userAgent])
 
-| Param     | Type                | Default        | Description                                                  |
-| --------- | ------------------- | -------------- | ------------------------------------------------------------ |
-| apiKey    | <code>String</code> |                | Your [Apex Legends API](https://apexlegendsapi.com) Auth Key |
-| [version] | <code>Number</code> | <code>5</code> | API version to use                                           |
+| Param       | Type                | Default                                         | Description                                                  |
+| ----------- | ------------------- | ----------------------------------------------- | ------------------------------------------------------------ |
+| apiKey      | <code>String</code> |                                                 | Your [Apex Legends API](https://apexlegendsapi.com) Auth Key |
+| [version]   | <code>Number</code> | <code>5</code>                                  | API version to use                                           |
+| [userAgent] | <code>String</code> | <code>&quot;mozambique-api-wrapper&quot;</code> | User-Agent header                                            |
 
 <a name="MozambiqueAPI+search"></a>
 
@@ -100,6 +105,19 @@ Search a player using player name or UID
 | [options]              | <code>object</code>                      |                    |                  |
 | [options.merge]        | <code>Boolean</code>                     | <code>false</code> |                  |
 | [options.removeMerged] | <code>Boolean</code>                     | <code>false</code> |                  |
+
+<a name="MozambiqueAPI+bulkSearch"></a>
+
+### mozambiqueAPI.bulkSearch(bulkQuery, [options]) ⇒ <code>Promise.&lt;Array.&lt;Player&gt;&gt;</code>
+
+**Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)
+
+| Param                  | Type                                             | Default            |
+| ---------------------- | ------------------------------------------------ | ------------------ |
+| bulkQuery              | [<code>BulkPlayerQuery</code>](#BulkPlayerQuery) |                    |
+| [options]              | <code>object</code>                              |                    |
+| [options.merge]        | <code>Boolean</code>                             | <code>false</code> |
+| [options.removeMerged] | <code>Boolean</code>                             | <code>false</code> |
 
 <a name="MozambiqueAPI+news"></a>
 
@@ -210,6 +228,21 @@ Player query
 | [uid]    | <code>String</code> \| <code>Number</code> | Player UID, obligatory if player name is not specified  |
 | platform | <code>String</code>                        | Player platform                                         |
 
+<a name="BulkPlayerQuery"></a>
+
+## BulkPlayerQuery : <code>Object</code>
+
+Bulk player query
+
+**Kind**: global typedef  
+**Properties**
+
+| Name      | Type                                                                   | Description                                                              |
+| --------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [players] | <code>Array.&lt;String&gt;</code>                                      | Players in-game name, obligatory if uid is not specified                 |
+| [uids]    | <code>Array.&lt;String&gt;</code> \| <code>Array.&lt;Number&gt;</code> | Players UID, obligatory if player name is not specified                  |
+| platform  | <code>String</code>                                                    | Players platform, has to be the same for every player in the bulk search |
+
 <a name="NameToUIDData"></a>
 
 ## NameToUIDData : <code>Object</code>
@@ -219,9 +252,9 @@ NameToUID data
 **Kind**: global typedef  
 **Properties**
 
-| Name     | Type                | Description                    |
-| -------- | ------------------- | ------------------------------ |
-| [result] | <code>Number</code> | The uid of the provided player |
+| Name   | Type                                       | Description                    |
+| ------ | ------------------------------------------ | ------------------------------ |
+| result | <code>String</code> \| <code>Number</code> | The uid of the provided player |
 
 <a name="Player"></a>
 
