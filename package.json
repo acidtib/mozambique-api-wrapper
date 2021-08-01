@@ -1,6 +1,6 @@
 {
   "name": "mozambique-api-wrapper",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Wrapper to make accessing mozambiquehe.re APIs when writing code in Javascript (Node.js) much easier.",
   "main": "index.js",
   "scripts": {
