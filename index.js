@@ -64,9 +64,12 @@ class MozambiqueAPI {
    * Search a player using player name or UID
    *
    * @param {PlayerQuery} query - Query parameters
+   * @param {object} [options]
+   * @param {Boolean} [options.merge=false]
+   * @param {Boolean} [options.removeMerged=false]
    * @returns {Promise<Player>} Object with player info
    */
-  search(query) {
+  search(query, options = { merge: false, removeMerged: false }) {
     let type;
     if (query.player) type = "player=" + query.player;
     if (query.uid) type = "uid=" + query.uid;
@@ -76,7 +79,9 @@ class MozambiqueAPI {
       "&platform=" +
       query.platform +
       "&" +
-      type;
+      type +
+      (options.merge ? "&merge" : "") +
+      (options.removeMerged ? "&removeMerged" : "");
     return request(this, url);
   }
 
@@ -246,6 +251,9 @@ module.exports = MozambiqueAPI;
  * @property {Number} realtime.canJoin
  * @property {Number} realtime.partyFull
  * @property {String} realtime.selectedLegend
+ * @property {String} realtime.currentState
+ * @property {Number} realtime.currentStateSinceTimestamp
+ * @property {String} realtime.currentStateAsText
  *
  * @property {Object} legends
  * @property {Legend} legends.selected - Current selected legend
@@ -267,6 +275,7 @@ module.exports = MozambiqueAPI;
  * @property {Legend} legends.all.Horizon
  * @property {Legend} legends.all.Fuse
  * @property {Legend} legends.all.Valkyrie
+ * @property {Legend} legends.all.Seer
  *
  * @property {Object} mozambiquehere_internal - Internal API data
  * @property {String} mozambiquehere_internal.APIAccessType
@@ -287,9 +296,13 @@ module.exports = MozambiqueAPI;
  * @property {Tracker[]} [data]
  * @property {Object} [gameInfo]
  * @property {String} gameInfo.skin
+ * @property {String} gameInfo.skinRarity
  * @property {String} gameInfo.frame
+ * @property {String} gameInfo.frameRarity
  * @property {String} gameInfo.pose
+ * @property {String} gameInfo.poseRarity
  * @property {String} gameInfo.intro
+ * @property {String} gameInfo.introRarity
  * @property {LegendBadge[]} gameInfo.badges
  * @property {Object} ImgAssets
  * @property {String} ImgAssets.icon
@@ -302,6 +315,12 @@ module.exports = MozambiqueAPI;
  * @property {String} name
  * @property {String|Number} value
  * @property {String} key
+ * @property {object} [rank]
+ * @property {Number} rank.rankPos
+ * @property {Number} rank.topPercent
+ * @property {object} [rankPlatformSpecific]
+ * @property {Number} rankPlatformSpecific.rankPos
+ * @property {Number} rankPlatformSpecific.topPercent
  */
 
 /**

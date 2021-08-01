@@ -66,7 +66,7 @@ Core of mozambique-api-wrapper
 
 - [MozambiqueAPI](#MozambiqueAPI)
   - [new MozambiqueAPI(apiKey, [version])](#new_MozambiqueAPI_new)
-  - [.search(query)](#MozambiqueAPI+search) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
+  - [.search(query, options)](#MozambiqueAPI+search) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
   - [.news([lang])](#MozambiqueAPI+news) ⇒ <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code>
   - [.server()](#MozambiqueAPI+server) ⇒ [<code>Promise.&lt;Servers&gt;</code>](#Servers)
   - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Promise.&lt;Object&gt;</code>
@@ -87,16 +87,19 @@ Core of mozambique-api-wrapper
 
 <a name="MozambiqueAPI+search"></a>
 
-### mozambiqueAPI.search(query) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
+### mozambiqueAPI.search(query, options) ⇒ [<code>Promise.&lt;Player&gt;</code>](#Player)
 
 Search a player using player name or UID
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 **Returns**: [<code>Promise.&lt;Player&gt;</code>](#Player) - Object with player info
 
-| Param | Type                                     | Description      |
-| ----- | ---------------------------------------- | ---------------- |
-| query | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters |
+| Param                  | Type                                     | Default            | Description      |
+| ---------------------- | ---------------------------------------- | ------------------ | ---------------- |
+| query                  | [<code>PlayerQuery</code>](#PlayerQuery) |                    | Query parameters |
+| options                | <code>object</code>                      |                    |                  |
+| [options.merge]        | <code>Boolean</code>                     | <code>false</code> |                  |
+| [options.removeMerged] | <code>Boolean</code>                     | <code>false</code> |                  |
 
 <a name="MozambiqueAPI+news"></a>
 
@@ -269,6 +272,9 @@ Player data object
 | realtime.canJoin                                  | <code>Number</code>                                             |                                                                    |
 | realtime.partyFull                                | <code>Number</code>                                             |                                                                    |
 | realtime.selectedLegend                           | <code>String</code>                                             |                                                                    |
+| realtime.currentState                             | <code>String</code>                                             |                                                                    |
+| realtime.currentStateSinceTimestamp               | <code>Number</code>                                             |                                                                    |
+| realtime.currentStateAsText                       | <code>String</code>                                             |                                                                    |
 | legends                                           | <code>Object</code>                                             |                                                                    |
 | legends.selected                                  | [<code>Legend</code>](#Legend)                                  | Current selected legend                                            |
 | legends.all                                       | <code>Object</code>                                             | All legends                                                        |
@@ -289,6 +295,7 @@ Player data object
 | legends.all.Horizon                               | [<code>Legend</code>](#Legend)                                  |                                                                    |
 | legends.all.Fuse                                  | [<code>Legend</code>](#Legend)                                  |                                                                    |
 | legends.all.Valkyrie                              | [<code>Legend</code>](#Legend)                                  |                                                                    |
+| legends.all.Seer                                  | [<code>Legend</code>](#Legend)                                  |                                                                    |
 | mozambiquehere_internal                           | <code>Object</code>                                             | Internal API data                                                  |
 | mozambiquehere_internal.APIAccessType             | <code>String</code>                                             |                                                                    |
 | mozambiquehere_internal.ClusterID                 | <code>String</code>                                             |                                                                    |
@@ -308,19 +315,23 @@ Legend data object
 **Kind**: global typedef  
 **Properties**
 
-| Name             | Type                                                   |
-| ---------------- | ------------------------------------------------------ |
-| LegendName       | <code>String</code>                                    |
-| [data]           | [<code>Array.&lt;Tracker&gt;</code>](#Tracker)         |
-| [gameInfo]       | <code>Object</code>                                    |
-| gameInfo.skin    | <code>String</code>                                    |
-| gameInfo.frame   | <code>String</code>                                    |
-| gameInfo.pose    | <code>String</code>                                    |
-| gameInfo.intro   | <code>String</code>                                    |
-| gameInfo.badges  | [<code>Array.&lt;LegendBadge&gt;</code>](#LegendBadge) |
-| ImgAssets        | <code>Object</code>                                    |
-| ImgAssets.icon   | <code>String</code>                                    |
-| ImgAssets.banner | <code>String</code>                                    |
+| Name                 | Type                                                   |
+| -------------------- | ------------------------------------------------------ |
+| LegendName           | <code>String</code>                                    |
+| [data]               | [<code>Array.&lt;Tracker&gt;</code>](#Tracker)         |
+| [gameInfo]           | <code>Object</code>                                    |
+| gameInfo.skin        | <code>String</code>                                    |
+| gameInfo.skinRarity  | <code>String</code>                                    |
+| gameInfo.frame       | <code>String</code>                                    |
+| gameInfo.frameRarity | <code>String</code>                                    |
+| gameInfo.pose        | <code>String</code>                                    |
+| gameInfo.poseRarity  | <code>String</code>                                    |
+| gameInfo.intro       | <code>String</code>                                    |
+| gameInfo.introRarity | <code>String</code>                                    |
+| gameInfo.badges      | [<code>Array.&lt;LegendBadge&gt;</code>](#LegendBadge) |
+| ImgAssets            | <code>Object</code>                                    |
+| ImgAssets.icon       | <code>String</code>                                    |
+| ImgAssets.banner     | <code>String</code>                                    |
 
 <a name="Tracker"></a>
 
@@ -331,11 +342,17 @@ Tracker data object
 **Kind**: global typedef  
 **Properties**
 
-| Name  | Type                                       |
-| ----- | ------------------------------------------ |
-| name  | <code>String</code>                        |
-| value | <code>String</code> \| <code>Number</code> |
-| key   | <code>String</code>                        |
+| Name                            | Type                                       |
+| ------------------------------- | ------------------------------------------ |
+| name                            | <code>String</code>                        |
+| value                           | <code>String</code> \| <code>Number</code> |
+| key                             | <code>String</code>                        |
+| [rank]                          | <code>object</code>                        |
+| rank.rankPos                    | <code>Number</code>                        |
+| rank.topPercent                 | <code>Number</code>                        |
+| [rankPlatformSpecific]          | <code>object</code>                        |
+| rankPlatformSpecific.rankPos    | <code>Number</code>                        |
+| rankPlatformSpecific.topPercent | <code>Number</code>                        |
 
 <a name="Badge"></a>
 

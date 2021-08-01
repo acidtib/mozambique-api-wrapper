@@ -21,9 +21,12 @@ declare class MozambiqueAPI {
    * Search a player using player name or UID
    *
    * @param {PlayerQuery} query - Query parameters
+   * @param {object} [options]
+   * @param {Boolean} [options.merge=false]
+   * @param {Boolean} [options.removeMerged=false]
    * @returns {Promise<Player>} Object with player info
    */
-  search(query: PlayerQuery): Promise<Player>;
+  search(query: PlayerQuery, options: { merge: Boolean, removeMerged: Boolean }): Promise<Player>;
   /**
    * Get recent news about Apex Legends
    *
@@ -177,6 +180,9 @@ type Player = {
     canJoin: number;
     partyFull: number;
     selectedLegend: string;
+    currentState: string;
+    currentStateSinceTimestamp: number;
+    currentStateAsText: string;
   };
   legends: {
     selected: Legend;
@@ -198,6 +204,7 @@ type Player = {
       Horizon: Legend;
       Fuse: Legend;
       Valkyrie: Legend;
+      Seer: Legend;
     };
   };
   /**
@@ -321,9 +328,13 @@ type Legend = {
   data?: Tracker[];
   gameInfo?: {
     skin: string;
+    skinRarity: string;
     frame: string;
+    frameRarity: string;
     pose: string;
+    poseRarity: string;
     intro: string;
+    introRarity: string;
     badges: LegendBadge[];
   };
   ImgAssets: {
@@ -338,6 +349,14 @@ type Tracker = {
   name: string;
   value: string | number;
   key: string;
+  rank?: {
+    rankPos: number;
+    topPercent: number;
+  };
+  rankPlatformSpecific?: {
+    rankPos: number;
+    topPercent: number;
+  };
 };
 /**
  * Badge data object
