@@ -5,3 +5,4 @@ minified/
 scripts/
 testErrors/
 .env
+docs/gendoc.js
