@@ -62,10 +62,18 @@ declare class MozambiqueAPI {
    *
    * @param {String} action - Action for the Match History API (info, get, delete, add)
    * @param {PlayerQuery} [query] - Query parameters
-   * @param {Number} [limit] - Limit of events to get on action get
+   * @param {Number} [limit=-1] - Limit of events to get on action get
+   * @param {Number} [start] - Start UNIX Timestamp
+   * @param {Number} [end] - End UNIX Timestamp
    * @returns {Promise<Object>} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
    */
-  history(action: string, query?: PlayerQuery, limit?: number): Promise<Object>;
+  history(
+    action: string,
+    query?: PlayerQuery,
+    limit?: number,
+    start?: number,
+    end?: number
+  ): Promise<Object>;
   /**
    * Get the map rotation
    * @returns {Promise<MapRotationData>}

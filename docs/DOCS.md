@@ -73,7 +73,7 @@ Core of mozambique-api-wrapper
   - [.bulkSearch(bulkQuery, [options])](#MozambiqueAPI+bulkSearch) ⇒ <code>Promise.&lt;Array.&lt;Player&gt;&gt;</code>
   - [.news([lang])](#MozambiqueAPI+news) ⇒ <code>Promise.&lt;Array.&lt;ApexNews&gt;&gt;</code>
   - [.server()](#MozambiqueAPI+server) ⇒ [<code>Promise.&lt;Servers&gt;</code>](#Servers)
-  - [.history(action, [query], [limit])](#MozambiqueAPI+history) ⇒ <code>Promise.&lt;Object&gt;</code>
+  - [.history(action, [query], [limit], [start], [end])](#MozambiqueAPI+history) ⇒ <code>Promise.&lt;Object&gt;</code>
   - [.mapRotation()](#MozambiqueAPI+mapRotation) ⇒ [<code>Promise.&lt;MapRotationData&gt;</code>](#MapRotationData)
   - [.origin(player, [showAllHits])](#MozambiqueAPI+origin) ⇒ <code>Promise.&lt;(OriginData\|Array.&lt;OriginData&gt;)&gt;</code>
   - [.announcements()](#MozambiqueAPI+announcements) ⇒ [<code>Promise.&lt;Announcement&gt;</code>](#Announcement)
@@ -142,18 +142,20 @@ Get server status for Origin, EA, Apex Legends and apexlegendsapi API
 **Returns**: [<code>Promise.&lt;Servers&gt;</code>](#Servers) - Object with status of all servers  
 <a name="MozambiqueAPI+history"></a>
 
-### mozambiqueAPI.history(action, [query], [limit]) ⇒ <code>Promise.&lt;Object&gt;</code>
+### mozambiqueAPI.history(action, [query], [limit], [start], [end]) ⇒ <code>Promise.&lt;Object&gt;</code>
 
 Avaliable for everyone but with limitations depending on your api access type
 
 **Kind**: instance method of [<code>MozambiqueAPI</code>](#MozambiqueAPI)  
 **Returns**: <code>Promise.&lt;Object&gt;</code> - Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
 
-| Param   | Type                                     | Description                                               |
-| ------- | ---------------------------------------- | --------------------------------------------------------- |
-| action  | <code>String</code>                      | Action for the Match History API (info, get, delete, add) |
-| [query] | [<code>PlayerQuery</code>](#PlayerQuery) | Query parameters                                          |
-| [limit] | <code>Number</code>                      | Limit of events to get on action get                      |
+| Param   | Type                                     | Default         | Description                                               |
+| ------- | ---------------------------------------- | --------------- | --------------------------------------------------------- |
+| action  | <code>String</code>                      |                 | Action for the Match History API (info, get, delete, add) |
+| [query] | [<code>PlayerQuery</code>](#PlayerQuery) |                 | Query parameters                                          |
+| [limit] | <code>Number</code>                      | <code>-1</code> | Limit of events to get on action get. -1 is no limit      |
+| [start] | <code>Number</code>                      |                 | Start UNIX Timestamp                                      |
+| [end]   | <code>Number</code>                      |                 | End UNIX Timestamp                                        |
 
 <a name="MozambiqueAPI+mapRotation"></a>
 

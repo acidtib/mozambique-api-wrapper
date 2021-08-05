@@ -97,15 +97,14 @@ class MozambiqueAPI {
   bulkSearch(bulkQuery, options = { merge: false, removeMerged: false }) {
     let type;
     if (bulkQuery.players && bulkQuery.players.length > 0)
-      type = "player=" + bulkQuery.players.map((p) => p).join(",");
+      type = "&player=" + bulkQuery.players.map((p) => p).join(",");
     if (bulkQuery.uids && bulkQuery.uids.length > 0)
-      type = "uid=" + bulkQuery.uids.map((u) => u).join(",");
+      type = "&uid=" + bulkQuery.uids.map((u) => u).join(",");
     let url =
       DIRECTORY.SEARCH_URL +
       this.version +
       "&platform=" +
       query.platform +
-      "&" +
       type +
       (options.merge ? "&merge" : "") +
       (options.removeMerged ? "&removeMerged" : "");
@@ -138,10 +137,12 @@ class MozambiqueAPI {
    *
    * @param {String} action - Action for the Match History API (info, get, delete, add)
    * @param {PlayerQuery} [query] - Query parameters
-   * @param {Number} [limit] - Limit of events to get on action get
+   * @param {Number} [limit=-1] - Limit of events to get on action get. -1 is no limit
+   * @param {Number} [start] - Start UNIX Timestamp
+   * @param {Number} [end] - End UNIX Timestamp
    * @returns {Promise<Object>} Data returned differs depending on action parameter. Please refer to [API documentation](https://apexlegendsapi.com) for more info
    */
-  history(action, query, limit) {
+  history(action, query, limit = -1, start, end) {
     let q = "";
     if (action != "info") {
       let type;
@@ -151,9 +152,16 @@ class MozambiqueAPI {
     }
 
     let l = "";
-    if (!isNaN(limit)) l = "&limit=" + limit;
+    if (!isNaN(limit) && limit != -1) l = "&limit=" + limit;
 
-    let url = DIRECTORY.MATCH_HISTORY + q + "history=1&action=" + action + l;
+    let url =
+      DIRECTORY.MATCH_HISTORY +
+      q +
+      "history=1&action=" +
+      action +
+      l +
+      (start != null ? "&start=" + start : "") +
+      (end != null ? "&end" + end : "");
     return request(this, url);
   }
 
