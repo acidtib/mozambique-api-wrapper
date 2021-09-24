@@ -29,10 +29,17 @@ function sleep(ms) {
 }
 
 async function test() {
+  let query = {
+    player: null,
+    uid: 1000993902310,
+    platform: "PC"
+  };
+
   client
-    .search({ player: "KingBR", platform: "PC" })
+    .search(query)
     .then((resp) => {
       console.log("Search: OK");
+      console.log(resp.global)
     })
     .catch((err) => {
       console.log("Search: ERROR");
