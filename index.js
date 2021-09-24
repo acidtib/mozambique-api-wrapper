@@ -72,8 +72,8 @@ class MozambiqueAPI {
    */
   search(query, options = { merge: false, removeMerged: false }) {
     let type;
-    if (query.player) type = "player=" + query.player;
-    if (query.uid) type = "uid=" + query.uid;
+    if (query.player != null) type = "player=" + query.player;
+    if (query.uid != null) type = "uid=" + query.uid;
     let url =
       DIRECTORY.SEARCH_URL +
       this.version +
